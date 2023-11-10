@@ -1,22 +1,12 @@
-// rrd imports
 import { useLoaderData } from "react-router-dom";
-
-// library import
 import { toast } from "react-toastify";
-
-// component imports
 import Table from "../components/Table";
-
-// helpers
 import { deleteItem, fetchData } from "../helpers";
-
-// loader
 export async function expensesLoader() {
 	const expenses = fetchData("expenses");
 	return { expenses };
 }
 
-// action
 export async function expensesAction({ request }) {
 	const data = await request.formData();
 	const { _action, ...values } = Object.fromEntries(data);
@@ -36,19 +26,18 @@ export async function expensesAction({ request }) {
 
 const ExpensesPage = () => {
 	const { expenses } = useLoaderData();
-
 	return (
 		<div className='grid gap-8'>
-			<h1>All Expenses</h1>
+			<h1 className='text-alice text-xl'>All Expenses</h1>
 			{expenses && expenses.length > 0 ? (
 				<div className='grid gap-6'>
-					<h2>
+					<h2 className='text-alice text-lg'>
 						Recent Expenses <small>({expenses.length} total)</small>
 					</h2>
 					<Table expenses={expenses} />
 				</div>
 			) : (
-				<p>No Expenses to show</p>
+				<p className='text-alice text-lg'>No Expenses to show</p>
 			)}
 		</div>
 	);

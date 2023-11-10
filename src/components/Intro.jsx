@@ -43,9 +43,10 @@ const Intro = () => {
 
 					{/* cta */}
 					{!userName ? (
-						<div className='my-4 w-4/5 mx-auto sm:mx-0'>
-							<Form className='sm:text-start text-center' method='post'>
+						<div className='sm:mt-12 mt-4 w-4/5 mx-auto sm:mx-0'>
+							<Form className='sm:text-start text-center  grid grid-cols-1' method='post'>
 								<input
+									className='text-navy rounded-lg py-2 px-4'
 									type='text'
 									name='userName'
 									required
@@ -55,7 +56,7 @@ const Intro = () => {
 								/>
 								<input type='hidden' name='_action' value='newUser' />
 								<button
-									className='group shadow-md bg-sunny text-black py-1.5 px-6 rounded-md my-2 inline-flex items-center  hover:bg-fluo transition-all duration-300'
+									className='text-center group shadow-md bg-sunny text-black py-1.5 px-6 rounded-md my-2 hover:bg-fluo transition-all duration-300 flex justify-center gap-2 items-center'
 									type='submit'>
 									<span className='text-lg px-2'>Start budgeting</span>
 									<span>

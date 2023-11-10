@@ -21,7 +21,6 @@ export async function dashboardAction({ request }) {
 	const data = await request.formData();
 	const { _action, ...values } = Object.fromEntries(data);
 
-	// new user submission
 	if (_action === "newUser") {
 		try {
 			localStorage.setItem("userName", JSON.stringify(values.userName));
