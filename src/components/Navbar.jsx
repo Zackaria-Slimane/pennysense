@@ -18,7 +18,7 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }) => {
 	};
 
 	return (
-		<nav className='w-[90%] mx-auto flex py-6 px-6 justify-between items-center navbar'>
+		<nav className='w-[80dvw] mx-auto flex py-6 px-6 justify-between items-center navbar'>
 			<NavLink to='/'>
 				<img
 					className='w-20 h-10 text-alice hover:text-fluo hover:scale-110 hover:rotate-12'

@@ -7,15 +7,12 @@ const BudgetItem = ({ budget, showDelete = false }) => {
 	const spent = calculateSpentByBudget(id);
 
 	return (
-		<div
-			className='budget'
-			style={{
-				"--accent": color,
-			}}>
+		<div className='budget mt-6 grid auto-cols-fr gap-6 border-fluo rounded-2xl p-4 border-2 text-alice'>
 			<div className='progress-text'>
 				<h3>{name}</h3>
 				<p>{formatCurrency(amount)} Budgeted</p>
 			</div>
+
 			<progress max={amount} value={spent}>
 				{formatPercentage(spent / amount)}
 			</progress>

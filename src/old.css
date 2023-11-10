@@ -218,7 +218,7 @@ p {
 
 /* utility layouts */
 
-.flex-lg {
+.flex gap-8 {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -230,7 +230,7 @@ p {
 	gap: var(--space-lg);
 }
 
-.flex-md {
+.flex gap-6 {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -242,7 +242,7 @@ p {
 	gap: var(--space-md);
 }
 
-.flex-sm {
+.flex gap-4 {
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -254,28 +254,28 @@ p {
 	gap: var(--space-sm);
 }
 
-.grid-lg {
+.grid gap-8 {
 	display: -ms-grid;
 	display: grid;
 	gap: var(--space-lg);
 	width: 100%;
 }
 
-.grid-md {
+.grid gap-6 {
 	display: -ms-grid;
 	display: grid;
 	gap: var(--space-md);
 	width: 100%;
 }
 
-.grid-sm {
+.grid gap-4 {
 	display: -ms-grid;
 	display: grid;
 	gap: var(--space-sm);
 	width: 100%;
 }
 
-.grid-xs {
+.grid gap-4 {
 	display: -ms-grid;
 	display: grid;
 	gap: var(--space-xs);
@@ -496,7 +496,7 @@ select {
 	color: hsl(var(--backdrop));
 }
 
-.budget > .flex-sm {
+.budget > .flex gap-4 {
 	padding-top: var(--space-sm);
 	display: -webkit-box;
 	display: -ms-flexbox;

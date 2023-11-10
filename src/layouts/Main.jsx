@@ -26,7 +26,7 @@ const Main = () => {
 				/>
 			</div>
 			<Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
-			<main>
+			<main className='sm:w-[80dvw] w-full px-8 mx-auto'>
 				<Outlet />
 			</main>
 			<Footer />

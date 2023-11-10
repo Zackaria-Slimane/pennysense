@@ -17,11 +17,13 @@ const ExpenseItem = ({ expense, showBudget }) => {
 
 	return (
 		<>
-			<td className='text-alice'>{expense.name}</td>
-			<td className='text-alice'>{formatCurrency(expense.amount)}</td>
-			<td className='text-alice'>{formatDateToLocaleString(expense.createdAt)}</td>
+			<td className='text-navy text-center'>{expense.name}</td>
+			<td className='text-navy text-center'>{formatCurrency(expense.amount)}</td>
+			<td className='text-navy text-center'>
+				{formatDateToLocaleString(expense.createdAt)}
+			</td>
 			{showBudget && (
-				<td className='text-alice'>
+				<td className='text-navy text-center'>
 					<Link
 						to={`/budget/${budget.id}`}
 						style={{
@@ -37,9 +39,9 @@ const ExpenseItem = ({ expense, showBudget }) => {
 					<input type='hidden' name='expenseId' value={expense.id} />
 					<button
 						type='submit'
-						className='btn btn--warning'
+						className='text-center btn btn--warning'
 						aria-label={`Delete ${expense.name} expense`}>
-						<TrashIcon width={20} />
+						<TrashIcon className='text-navy' width={20} />
 					</button>
 				</fetcher.Form>
 			</td>

@@ -24,7 +24,7 @@ const AddBudgetForm = () => {
 						Budget Name
 					</label>
 					<input
-						className='text-navy'
+						className='text-navy rounded-lg py-2 px-4'
 						type='text'
 						name='newBudget'
 						id='newBudget'
@@ -38,7 +38,7 @@ const AddBudgetForm = () => {
 						Amount
 					</label>
 					<input
-						className='text-navy'
+						className='text-navy rounded-lg py-2 px-4'
 						type='number'
 						step='0.01'
 						name='newBudgetAmount'

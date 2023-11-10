@@ -75,38 +75,42 @@ const Dashboard = () => {
 	return (
 		<>
 			{userName ? (
-				<div className='px-0 mx-auto'>
-					<h1 className='text-3xl sm:text-6xl text-alice font-jetBrain py-6'>
+				<div className='px-0 mx-auto overflow-x-hidden'>
+					<h1 className='text-3xl sm:text-5xl text-alice font-jetBrain py-6'>
 						Welcome back, <span className='text-fluo capitalize'>{userName}</span>
 					</h1>
-					<div className='grid gap-2 w-full px-2'>
+					<div className='grid gap-2 w-full px-2 pt-2'>
 						{budgets && budgets.length > 0 ? (
 							<div className='grid gap-4 w-full mx-auto'>
 								<div className='flex flex-wrap gap-4'>
 									<AddBudgetForm />
 									<AddExpenseForm budgets={budgets} />
 								</div>
-								<h2 className='text-alice'>Existing Budgets</h2>
-								<div className='flex gap-4 flex-wrap'>
-									{budgets.map((budget) => (
-										<BudgetItem key={budget.id} budget={budget} />
-									))}
-								</div>
-								{expenses && expenses.length > 0 && (
-									<div className='grid-md'>
-										<h2 className='text-alice'>Recent Expenses</h2>
-										<Table
-											expenses={expenses
-												.sort((a, b) => b.createdAt - a.createdAt)
-												.slice(0, 8)}
-										/>
-										{expenses.length > 8 && (
-											<Link to='expenses' className='btn btn--dark'>
-												View all expenses
-											</Link>
-										)}
+								<div className='max-w-[1200px]'>
+									<h2 className='text-alice text-xl font-heebo mt-8'>Existing Budgets</h2>
+									<div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+										{budgets.map((budget) => (
+											<BudgetItem key={budget.id} budget={budget} />
+										))}
 									</div>
-								)}
+									{expenses && expenses.length > 0 && (
+										<div className='grid gap-6'>
+											<h2 className='text-alice text-xl font-heebo mt-12'>
+												Recent Expenses
+											</h2>
+											<Table
+												expenses={expenses
+													.sort((a, b) => b.createdAt - a.createdAt)
+													.slice(0, 8)}
+											/>
+											{expenses.length > 8 && (
+												<Link to='expenses' className='btn btn--dark'>
+													View all expenses
+												</Link>
+											)}
+										</div>
+									)}
+								</div>
 							</div>
 						) : (
 							<div className='grid grid-cols-1 gap-2 text-alice font-heebo py-6'>

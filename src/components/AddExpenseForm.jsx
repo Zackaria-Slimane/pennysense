@@ -32,7 +32,7 @@ const AddExpenseForm = ({ budgets }) => {
 							Expense Name
 						</label>
 						<input
-							className='text-navy'
+							className='text-navy rounded-lg py-2 px-4'
 							type='text'
 							name='newExpense'
 							id='newExpense'
@@ -41,12 +41,12 @@ const AddExpenseForm = ({ budgets }) => {
 							required
 						/>
 					</div>
-					<div className='grid-xs'>
+					<div className='grid gap-4'>
 						<label className='text-alice text-lg' htmlFor='newExpenseAmount'>
 							Amount
 						</label>
 						<input
-							className='text-navy'
+							className='text-navy rounded-lg py-2 px-4'
 							type='number'
 							step='0.01'
 							inputMode='decimal'
@@ -57,11 +57,15 @@ const AddExpenseForm = ({ budgets }) => {
 						/>
 					</div>
 				</div>
-				<div className='grid gap-2' hidden={budgets.length === 1}>
+				<div className='grid gap-4' hidden={budgets.length === 1}>
 					<label className='text-alice text-lg' htmlFor='newExpenseBudget'>
 						Budget Category
 					</label>
-					<select name='newExpenseBudget' id='newExpenseBudget' required>
+					<select
+						name='newExpenseBudget'
+						className='rounded-lg py-2 px-4'
+						id='newExpenseBudget'
+						required>
 						{budgets
 							.sort((a, b) => a.createdAt - b.createdAt)
 							.map((budget) => {
