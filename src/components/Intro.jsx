@@ -2,7 +2,6 @@ import { Form } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import { fetchData } from "../helpers";
 import { FaUserPlus } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
 import ImageSlider from "../components/utility/ImageSlider";
 
 const Intro = () => {
