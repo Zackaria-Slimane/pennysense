@@ -114,8 +114,10 @@ const Dashboard = () => {
 							<br />
 							<span className='text-lg mt-2'>
 								You have <span className='text-fluo'>$ {availableBudget} </span> left to
-								spend this month on <span className='text-sunny'> $ {totalBudgets} </span>{" "}
-								budgeted.
+								spend this month.
+								<br />
+								Spent <span className='text-tomato'>$ {totalExpenses} </span> so far out
+								of <span className='text-sunny'> $ {totalBudgets} </span> budgeted.
 							</span>
 						</h1>
 						<button
