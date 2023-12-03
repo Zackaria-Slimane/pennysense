@@ -1,5 +1,5 @@
 import { Link, useFetcher } from "react-router-dom";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { FiXCircle } from "react-icons/fi";
 import {
 	formatCurrency,
 	formatDateToLocaleString,
@@ -17,13 +17,15 @@ const ExpenseItem = ({ expense, showBudget }) => {
 
 	return (
 		<>
-			<td className='text-navy text-center'>{expense.name}</td>
-			<td className='text-navy text-center'>{formatCurrency(expense.amount)}</td>
-			<td className='text-navy text-center'>
+			<td className='text-navy text-xs sm:text-base text-center'>{expense.name}</td>
+			<td className='text-center text-sm sm:text-base text-tomato'>
+				{formatCurrency(expense.amount)}
+			</td>
+			<td className='text-navy text-xs sm:text-base text-center'>
 				{formatDateToLocaleString(expense.createdAt)}
 			</td>
 			{showBudget && (
-				<td className='text-navy text-center'>
+				<td className='text-navy text-sm sm:text-base text-center'>
 					<Link
 						to={`/budget/${budget.id}`}
 						style={{
@@ -41,7 +43,7 @@ const ExpenseItem = ({ expense, showBudget }) => {
 						type='submit'
 						className='text-center btn btn--warning'
 						aria-label={`Delete ${expense.name} expense`}>
-						<TrashIcon className='text-navy' width={20} />
+						<FiXCircle className='text-tomato' width={20} />
 					</button>
 				</fetcher.Form>
 			</td>

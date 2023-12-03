@@ -1,5 +1,9 @@
+import { useState, Fragment, useRef, useEffect } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
+import { BsCurrencyExchange } from "react-icons/bs";
+import { getTotalExpenses, getTotalBudgets } from "../helpers";
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
 import AddExpenseForm from "../components/AddExpenseForm";
@@ -70,15 +74,119 @@ export async function dashboardAction({ request }) {
 
 const Dashboard = () => {
 	const { userName, budgets, expenses } = useLoaderData();
+	const [modalOpen, setModalOpen] = useState(false);
+	const [income, setIncome] = useState(localStorage.getItem("income") || 0);
+	const incomeRef = useRef(null);
+	let totalBudgets = getTotalBudgets();
+	let totalExpenses = getTotalExpenses();
+	let availableBudget = income - totalExpenses;
+
+	useEffect(() => {
+		totalExpenses = getTotalExpenses();
+		availableBudget = income - totalExpenses;
+		if (availableBudget < 0) {
+			toast.error(`You are over budget by $ ${Math.abs(availableBudget)}`);
+		}
+	}, [expenses, budgets, income]);
+
+	function closeModal() {
+		setModalOpen(false);
+	}
+
+	function openModal() {
+		setModalOpen(true);
+	}
+
+	function saveIncome() {
+		setIncome(incomeRef.current.value);
+		localStorage.setItem("income", incomeRef.current.value);
+		toast.success(`${incomeRef.current.value} saved as income !`);
+		closeModal();
+	}
 
 	return (
 		<>
 			{userName ? (
 				<div className='px-0 mx-auto overflow-x-hidden'>
-					<h1 className='text-3xl sm:text-5xl text-alice font-jetBrain py-6'>
-						Welcome back, <span className='text-fluo capitalize'>{userName}</span>
-					</h1>
-					<div className='grid gap-2 w-full px-2 pt-2'>
+					<div className='flex flex-wrap justify-center sm:justify-between items-center py-4'>
+						<h1 className='text-3xl sm:text-5xl text-alice font-jetBrain py-6'>
+							Welcome back, <span className='text-fluo capitalize'>{userName}</span>
+							<br />
+							<span className='text-lg mt-2'>
+								You have <span className='text-fluo'>$ {availableBudget} </span> left to
+								spend this month on <span className='text-sunny'> $ {totalBudgets} </span>{" "}
+								budgeted.
+							</span>
+						</h1>
+						<button
+							type='button'
+							onClick={openModal}
+							className='rounded-lg bg-alice flex justify-between items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+							<span>Add income</span> <BsCurrencyExchange />
+						</button>
+
+						<Transition appear show={modalOpen} as={Fragment}>
+							<Dialog as='div' className='relative z-10' onClose={closeModal}>
+								<Transition.Child
+									as={Fragment}
+									enter='ease-out duration-300'
+									enterFrom='opacity-0'
+									enterTo='opacity-100'
+									leave='ease-in duration-200'
+									leaveFrom='opacity-100'
+									leaveTo='opacity-0'>
+									<div className='fixed inset-0 bg-black/25' />
+								</Transition.Child>
+
+								<div className='fixed inset-0 overflow-y-auto'>
+									<div className='flex min-h-full items-center justify-center p-4 text-center'>
+										<Transition.Child
+											as={Fragment}
+											enter='ease-out duration-300'
+											enterFrom='opacity-0 scale-95'
+											enterTo='opacity-100 scale-100'
+											leave='ease-in duration-200'
+											leaveFrom='opacity-100 scale-100'
+											leaveTo='opacity-0 scale-95'>
+											<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+												<Dialog.Title
+													as='h3'
+													className='text-lg font-medium leading-6 text-navy'>
+													Salary or other types of income
+												</Dialog.Title>
+												<div className='grid mt-4 gap-4'>
+													<label className='sr-only' htmlFor='newBudgetAmount'>
+														Salary
+													</label>
+													<input
+														className='text-navy border-navy ring-2 ring-navy outline-navy rounded-lg py-2 px-4'
+														type='number'
+														name='income'
+														id='income'
+														placeholder='... $12000'
+														required
+														inputMode='decimal'
+														ref={incomeRef}
+													/>
+												</div>
+
+												<div className='mt-6'>
+													<button
+														onKeyDown={saveIncome}
+														onClick={saveIncome}
+														type='button'
+														className='inline-flex justify-center rounded-md border border-transparent bg-alice px-4 py-2 text-sm font-medium text-navy hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2'>
+														Add income
+													</button>
+												</div>
+											</Dialog.Panel>
+										</Transition.Child>
+									</div>
+								</div>
+							</Dialog>
+						</Transition>
+					</div>
+					<div className='grid gap-2 w-full pb-12 pt-6'>
 						{budgets && budgets.length > 0 ? (
 							<div className='grid gap-4 w-full mx-auto'>
 								<div className='flex flex-wrap gap-4'>

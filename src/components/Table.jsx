@@ -2,7 +2,7 @@ import ExpenseItem from "./ExpenseItem";
 
 const Table = ({ expenses, showBudget = true }) => {
 	return (
-		<div className='overflow-x-hidden max-w-full pb-12'>
+		<div className=' max-w-full pb-12'>
 			<table className='table-auto rounded-lg border-separate w-full bg-slate-100 font-jetBrain'>
 				<thead>
 					<tr className='rounded-lg bg-gray-100 border-2 border-b-navy'>

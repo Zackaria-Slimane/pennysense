@@ -14,6 +14,16 @@ export const getAllMatchingItems = ({ category, key, value }) => {
 	return data.filter((item) => item[key] === value);
 };
 
+export const getTotalBudgets = () => {
+	const budgets = fetchData("budgets") ?? [];
+	return budgets.reduce((acc, budget) => (acc += budget.amount), 0);
+};
+
+export const getTotalExpenses = () => {
+	const expenses = fetchData("expenses") ?? [];
+	return expenses.reduce((acc, expense) => (acc += expense.amount), 0);
+};
+
 export const deleteItem = ({ key, id }) => {
 	const existingData = fetchData(key);
 	if (id) {
