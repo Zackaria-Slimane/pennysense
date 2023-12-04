@@ -18,7 +18,9 @@ const BudgetItem = ({ budget, showDelete = false }) => {
 			</progress>
 			<div className='progress-text'>
 				<small>{formatCurrency(spent)} spent</small>
-				<small>{formatCurrency(amount - spent)} remaining</small>
+				<small className={`${amount - spent < 0 ? "text-tomato" : "text-alice"}`}>
+					{formatCurrency(amount - spent)} remaining
+				</small>
 			</div>
 			{showDelete ? (
 				<div className='flex flex-wrap gap-4'>

@@ -119,9 +119,9 @@ svg {
 	text-align: right;
 }
 
-.progress-text:nth-of-type(2) :nth-child(2) {
+/* .progress-text:nth-of-type(2) :nth-child(2) {
 	color: hsl(var(--muted));
-}
+} */
 
 progress {
 	-webkit-appearance: none;
