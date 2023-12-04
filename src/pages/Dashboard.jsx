@@ -123,7 +123,7 @@ const Dashboard = () => {
 						<button
 							type='button'
 							onClick={openModal}
-							className='rounded-lg bg-alice flex justify-between items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+							className='rounded-lg bg-alice flex justify-between items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-alice/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
 							<span>Add income</span> <BsCurrencyExchange />
 						</button>
 
@@ -212,8 +212,10 @@ const Dashboard = () => {
 													.sort((a, b) => b.createdAt - a.createdAt)
 													.slice(0, 8)}
 											/>
-											{expenses.length > 8 && (
-												<Link to='expenses' className='btn btn--dark'>
+											{expenses.length > 6 && (
+												<Link
+													to='expenses'
+													className='rounded-lg w-1/5 mx-auto text-center bg-alice flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-alice/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
 													View all expenses
 												</Link>
 											)}
