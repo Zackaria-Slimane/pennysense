@@ -55,7 +55,7 @@ const Intro = () => {
 								/>
 								<input type='hidden' name='_action' value='newUser' />
 								<button
-									className='text-center group shadow-md bg-sunny text-black py-1.5 px-6 rounded-md my-2 hover:bg-fluo transition-all duration-300 flex justify-center gap-2 items-center'
+									className='text-center group shadow-md bg-fluo text-black py-1.5 px-6 rounded-md my-2 hover:bg-fluo/80 transition-all duration-300 flex justify-center gap-2 items-center'
 									type='submit'>
 									<span className='text-lg px-2'>Start budgeting</span>
 									<span>

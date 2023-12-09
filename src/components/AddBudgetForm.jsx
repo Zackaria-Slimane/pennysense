@@ -16,15 +16,15 @@ const AddBudgetForm = () => {
 	}, [isSubmitting]);
 
 	return (
-		<div className='font-jetBrain max-w-[600px] p-6 border-2 rounded-2xl flex-1'>
-			<h2 className='text-fluo text-2xl'>Create budget</h2>
+		<div className='font-jetBrain max-w-[600px] p-6 bg-white rounded-2xl flex-1'>
+			<h2 className='text-navy text-2xl'>Add new budget</h2>
 			<fetcher.Form method='post' className='grid gap-4 p-4' ref={formRef}>
 				<div className='grid gap-4'>
-					<label className='text-alice text-lg' htmlFor='newBudget'>
+					<label className='text-navy text-lg' htmlFor='newBudget'>
 						Budget Name
 					</label>
 					<input
-						className='text-navy rounded-lg py-2 px-4'
+						className='text-navy rounded-lg ring-2 ring-navy py-2 px-4'
 						type='text'
 						name='newBudget'
 						id='newBudget'
@@ -34,11 +34,11 @@ const AddBudgetForm = () => {
 					/>
 				</div>
 				<div className='grid gap-4'>
-					<label className='text-alice text-lg' htmlFor='newBudgetAmount'>
+					<label className='text-navy text-lg' htmlFor='newBudgetAmount'>
 						Amount
 					</label>
 					<input
-						className='text-navy rounded-lg py-2 px-4'
+						className='text-navy rounded-lg ring-2 ring-navy py-2 px-4'
 						type='number'
 						step='0.01'
 						name='newBudgetAmount'
@@ -51,7 +51,7 @@ const AddBudgetForm = () => {
 				<input type='hidden' name='_action' value='createBudget' />
 				<button
 					type='submit'
-					className='px-6 py-1 flex gap-2 bg-alice items-center rounded-md hover:bg-fluo transition-all duration-300 max-w-[230px]'
+					className='px-6 py-2 mt-2 flex gap-2 bg-fluo items-center rounded-md hover:bg-fluo/80 transition-all duration-300 max-w-[230px]'
 					disabled={isSubmitting}>
 					{isSubmitting ? (
 						<span className='text-lg'>Submitting…</span>

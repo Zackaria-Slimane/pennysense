@@ -18,7 +18,7 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }) => {
 	};
 
 	return (
-		<nav className='w-[80dvw] mx-auto flex py-6 px-6 justify-between items-center navbar'>
+		<nav className='w-full max-w-[1200px] mx-auto flex py-6  justify-between items-center navbar'>
 			<NavLink to='/'>
 				<img
 					className='w-20 h-10 text-alice hover:text-fluo hover:scale-110 hover:rotate-12'
@@ -39,7 +39,7 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }) => {
 							<button
 								className='group bg-tomato py-1 px-4 rounded-md my-2 inline-flex items-center hover:scale-105 transition-all duration-300'
 								type='submit'>
-								<span className='text-lg'> Delete Session </span>
+								<span className='text-lg text-alice'> Delete Session </span>
 							</button>
 						</Form>
 					</div>

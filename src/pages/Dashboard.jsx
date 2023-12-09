@@ -2,7 +2,7 @@ import { useState, Fragment, useRef, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Link, useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
-import { BsCurrencyExchange } from "react-icons/bs";
+import { BsCurrencyExchange, BsCalculator, BsCartCheck } from "react-icons/bs";
 import { getTotalExpenses, getTotalBudgets } from "../helpers";
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
@@ -76,6 +76,8 @@ const Dashboard = () => {
 	const { userName, budgets, expenses } = useLoaderData();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [income, setIncome] = useState(localStorage.getItem("income") || 0);
+	const [showBudgetForm, setShowBudgetForm] = useState(false);
+	const [showExpenseForm, setShowExpenseForm] = useState(false);
 	const incomeRef = useRef(null);
 	let totalBudgets = getTotalBudgets();
 	let totalExpenses = getTotalExpenses();
@@ -97,6 +99,14 @@ const Dashboard = () => {
 		setModalOpen(true);
 	}
 
+	function toggleBudgetForm() {
+		setShowBudgetForm(!showBudgetForm);
+	}
+
+	function toggleExpenseForm() {
+		setShowExpenseForm(!showExpenseForm);
+	}
+
 	function saveIncome() {
 		setIncome(incomeRef.current.value);
 		localStorage.setItem("income", incomeRef.current.value);
@@ -107,7 +117,7 @@ const Dashboard = () => {
 	return (
 		<>
 			{userName ? (
-				<div className='px-0 mx-auto overflow-x-hidden'>
+				<div className='px-0 mx-auto overflow-x-hidden max-w-[1200px]'>
 					<div className='flex flex-wrap justify-center sm:justify-between items-center py-4'>
 						<h1 className='text-3xl sm:text-5xl text-alice font-jetBrain py-6'>
 							Welcome back, <span className='text-fluo capitalize'>{userName}</span>
@@ -120,13 +130,26 @@ const Dashboard = () => {
 								of <span className='text-sunny'> $ {totalBudgets} </span> budgeted.
 							</span>
 						</h1>
-						<button
-							type='button'
-							onClick={openModal}
-							className='rounded-lg bg-alice flex justify-between items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-alice/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
-							<span>Add income</span> <BsCurrencyExchange />
-						</button>
-
+						<div className='flex flex-col gap-4 justify-end items-end font-jetBrain'>
+							<button
+								type='button'
+								onClick={openModal}
+								className='rounded-lg bg-alice min-w-[145px] flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-alice/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+								<span>Add income</span> <BsCurrencyExchange />
+							</button>
+							<button
+								type='button'
+								onClick={toggleBudgetForm}
+								className='rounded-lg bg-alice min-w-[145px] flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-alice/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+								<span>Add Budget</span> <BsCalculator />
+							</button>
+							<button
+								type='button'
+								onClick={toggleExpenseForm}
+								className='rounded-lg bg-alice min-w-[145px] flex justify-center items-center gap-2 px-4 py-2 text-sm font-medium text-navy hover:bg-alice/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75'>
+								<span>Add Expense</span> <BsCartCheck />
+							</button>
+						</div>
 						<Transition appear show={modalOpen} as={Fragment}>
 							<Dialog as='div' className='relative z-10' onClose={closeModal}>
 								<Transition.Child
@@ -187,14 +210,80 @@ const Dashboard = () => {
 								</div>
 							</Dialog>
 						</Transition>
+
+						<Transition appear show={showBudgetForm} as={Fragment}>
+							<Dialog
+								as='div'
+								className='relative z-10 sm:w-[600px]'
+								onClose={toggleBudgetForm}>
+								<Transition.Child
+									as={Fragment}
+									enter='ease-out duration-300'
+									enterFrom='opacity-0'
+									enterTo='opacity-100'
+									leave='ease-in duration-200'
+									leaveFrom='opacity-100'
+									leaveTo='opacity-0'>
+									<div className='fixed inset-0 bg-black/25' />
+								</Transition.Child>
+
+								<div className='fixed inset-0 overflow-y-auto'>
+									<div className='flex min-h-full items-center justify-center p-4 text-center'>
+										<Transition.Child
+											as={Fragment}
+											enter='ease-out duration-300'
+											enterFrom='opacity-0 scale-95'
+											enterTo='opacity-100 scale-100'
+											leave='ease-in duration-200'
+											leaveFrom='opacity-100 scale-100'
+											leaveTo='opacity-0 scale-95'>
+											<Dialog.Panel className='w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+												<AddBudgetForm />
+											</Dialog.Panel>
+										</Transition.Child>
+									</div>
+								</div>
+							</Dialog>
+						</Transition>
+
+						<Transition appear show={showExpenseForm} as={Fragment}>
+							<Dialog
+								as='div'
+								className='relative z-10 sm:w-[600px]'
+								onClose={toggleExpenseForm}>
+								<Transition.Child
+									as={Fragment}
+									enter='ease-out duration-300'
+									enterFrom='opacity-0'
+									enterTo='opacity-100'
+									leave='ease-in duration-200'
+									leaveFrom='opacity-100'
+									leaveTo='opacity-0'>
+									<div className='fixed inset-0 bg-black/25' />
+								</Transition.Child>
+
+								<div className='fixed inset-0 overflow-y-auto'>
+									<div className='flex min-h-full items-center justify-center p-4 text-center'>
+										<Transition.Child
+											as={Fragment}
+											enter='ease-out duration-300'
+											enterFrom='opacity-0 scale-95'
+											enterTo='opacity-100 scale-100'
+											leave='ease-in duration-200'
+											leaveFrom='opacity-100 scale-100'
+											leaveTo='opacity-0 scale-95'>
+											<Dialog.Panel className='w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+												<AddExpenseForm budgets={budgets} />
+											</Dialog.Panel>
+										</Transition.Child>
+									</div>
+								</div>
+							</Dialog>
+						</Transition>
 					</div>
 					<div className='grid gap-2 w-full pb-12 pt-6'>
 						{budgets && budgets.length > 0 ? (
 							<div className='grid gap-4 w-full mx-auto'>
-								<div className='flex flex-wrap gap-4'>
-									<AddBudgetForm />
-									<AddExpenseForm budgets={budgets} />
-								</div>
 								<div className='max-w-[1200px]'>
 									<h2 className='text-alice text-xl font-heebo mt-8'>Existing Budgets</h2>
 									<div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
