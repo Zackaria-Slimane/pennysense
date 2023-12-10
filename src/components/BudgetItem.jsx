@@ -1,6 +1,10 @@
 import { Form, Link } from "react-router-dom";
 import { FaRegTrashCan, FaMoneyCheckDollar } from "react-icons/fa6";
-import { calculateSpentByBudget, formatCurrency, formatPercentage } from "../helpers";
+import {
+	calculateSpentByBudget,
+	formatCurrency,
+	formatPercentage,
+} from "../utils/helpers";
 
 const BudgetItem = ({ budget, showDelete = false }) => {
 	const { id, name, amount, color } = budget;

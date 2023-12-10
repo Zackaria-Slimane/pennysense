@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
-import { deleteItem } from "../helpers";
+import { deleteItem } from "../utils/helpers";
 
 export async function logoutAction() {
 	deleteItem({
@@ -12,6 +12,8 @@ export async function logoutAction() {
 	deleteItem({
 		key: "expenses",
 	});
-	toast.success("You’ve deleted your account!");
+
+	toast.success("You’ve deleted your account, Be back soon!");
+
 	return redirect("/");
 }

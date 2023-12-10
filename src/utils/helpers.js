@@ -1,3 +1,5 @@
+import { supabaseClient } from "./supabase";
+
 export const waait = () => new Promise((res) => setTimeout(res, Math.random() * 300));
 
 const generateRandomColor = () => {
@@ -24,7 +26,20 @@ export const getTotalExpenses = () => {
 	return expenses.reduce((acc, expense) => (acc += expense.amount), 0);
 };
 
-export const deleteItem = ({ key, id }) => {
+export const deleteItem = async ({ key, id }) => {
+	if (key === "budgets") {
+		const { error } = await supabaseClient.from("budgets").delete().eq("id", id);
+		if (error) {
+			console.log("Error on deleting budget ", id, error);
+		}
+	}
+
+	if (key === "expenses") {
+		const { error } = await supabaseClient.from("expenses").delete().eq("id", id);
+		if (error) {
+			console.log("Error on deleting expense ", id, error);
+		}
+	}
 	const existingData = fetchData(key);
 	if (id) {
 		const newData = existingData.filter((item) => item.id !== id);
@@ -33,7 +48,7 @@ export const deleteItem = ({ key, id }) => {
 	return localStorage.removeItem(key);
 };
 
-export const createBudget = ({ name, amount }) => {
+export const createBudget = async ({ name, amount }) => {
 	const newItem = {
 		id: crypto.randomUUID(),
 		name: name,
@@ -41,11 +56,17 @@ export const createBudget = ({ name, amount }) => {
 		amount: +amount,
 		color: generateRandomColor(),
 	};
+
+	const { error } = await supabaseClient.from("budgets").insert(newItem);
+	if (error) {
+		console.log("Error inserting data in budgets table", error);
+	}
+
 	const existingBudgets = fetchData("budgets") ?? [];
 	return localStorage.setItem("budgets", JSON.stringify([...existingBudgets, newItem]));
 };
 
-export const createExpense = ({ name, amount, budgetId }) => {
+export const createExpense = async ({ name, amount, budgetId }) => {
 	const newItem = {
 		id: crypto.randomUUID(),
 		name: name,
@@ -53,6 +74,12 @@ export const createExpense = ({ name, amount, budgetId }) => {
 		amount: +amount,
 		budgetId: budgetId,
 	};
+
+	const { error } = await supabaseClient.from("expenses").insert(newItem);
+	if (error) {
+		console.log("Error inserting data in expenses table", error);
+	}
+
 	const existingExpenses = fetchData("expenses") ?? [];
 	return localStorage.setItem("expenses", JSON.stringify([...existingExpenses, newItem]));
 };

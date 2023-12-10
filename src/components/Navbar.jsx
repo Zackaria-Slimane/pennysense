@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import close from "../assets/close.svg";
 import menu from "../assets/menu.svg";
 import { Form, NavLink } from "react-router-dom";
-import { fetchData } from "../helpers";
+import { fetchData } from "../utils/helpers";
 
 const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }) => {
 	const [user, setUser] = useState(null);

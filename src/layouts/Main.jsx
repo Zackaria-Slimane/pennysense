@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { fetchData } from "../helpers";
+import { fetchData } from "../utils/helpers";
 export function mainLoader() {
 	const userName = fetchData("userName");
 	return { userName };
