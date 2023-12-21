@@ -12,6 +12,7 @@ import {
 	waait,
 	getTotalExpenses,
 	getTotalBudgets,
+	UpdateIncome,
 } from "../utils/helpers";
 import Intro from "../components/Intro";
 import AddBudgetForm from "../components/AddBudgetForm";
@@ -48,8 +49,8 @@ export async function dashboardAction({ request }) {
 				amount: values.newBudgetAmount,
 			});
 			return toast.success("Budget created!");
-		} catch (e) {
-			throw new Error("There was a problem creating your budget.");
+		} catch (error) {
+			throw new Error("There was a problem creating your budget.", error);
 		}
 	}
 
@@ -61,8 +62,8 @@ export async function dashboardAction({ request }) {
 				budgetId: values.newExpenseBudget,
 			});
 			return toast.success(`Expense ${values.newExpense} created!`);
-		} catch (e) {
-			throw new Error("There was a problem creating your expense.");
+		} catch (error) {
+			throw new Error("There was a problem creating your expense.", error);
 		}
 	}
 
@@ -85,8 +86,8 @@ const Dashboard = () => {
 	const [income, setIncome] = useState(localStorage.getItem("income") || 0);
 	const [showBudgetForm, setShowBudgetForm] = useState(false);
 	const [showExpenseForm, setShowExpenseForm] = useState(false);
-	const incomeRef = useRef(null);
 	const [dbBudgets, setDbBudgets] = useState([]);
+	const incomeRef = useRef(null);
 	let totalBudgets = getTotalBudgets();
 	let totalExpenses = getTotalExpenses();
 	let availableBudget = income - totalExpenses;
@@ -127,9 +128,11 @@ const Dashboard = () => {
 		setShowExpenseForm(!showExpenseForm);
 	}
 
-	function saveIncome() {
+	async function saveIncome() {
 		setIncome(incomeRef.current.value);
 		localStorage.setItem("income", incomeRef.current.value);
+		let id = localStorage.getItem("userID");
+		await UpdateIncome(id, incomeRef.current.value);
 		toast.success(`${incomeRef.current.value} saved as income !`);
 		closeModal();
 	}
@@ -143,11 +146,11 @@ const Dashboard = () => {
 							Welcome back, <span className='text-fluo capitalize'>{userName}</span>
 							<br />
 							<span className='text-lg mt-2'>
-								You have <span className='text-fluo'>$ {availableBudget} </span> left to spend this
-								month.
+								You have <span className='text-fluo'>$ {availableBudget} </span> left to
+								spend this month.
 								<br />
-								Spent <span className='text-tomato'>$ {totalExpenses} </span> so far out of{" "}
-								<span className='text-sunny'> $ {totalBudgets} </span> budgeted.
+								Spent <span className='text-tomato'>$ {totalExpenses} </span> so far out
+								of <span className='text-sunny'> $ {totalBudgets} </span> budgeted.
 							</span>
 						</h1>
 						<div className='flex flex-col gap-4 justify-end items-end font-jetBrain'>
@@ -170,6 +173,7 @@ const Dashboard = () => {
 								<span>Add Expense</span> <BsCartCheck />
 							</button>
 						</div>
+
 						<Transition appear show={modalOpen} as={Fragment}>
 							<Dialog as='div' className='relative z-10' onClose={closeModal}>
 								<Transition.Child
@@ -194,7 +198,9 @@ const Dashboard = () => {
 											leaveFrom='opacity-100 scale-100'
 											leaveTo='opacity-0 scale-95'>
 											<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
-												<Dialog.Title as='h3' className='text-lg font-medium leading-6 text-navy'>
+												<Dialog.Title
+													as='h3'
+													className='text-lg font-medium leading-6 text-navy'>
 													Salary or other types of income
 												</Dialog.Title>
 												<div className='grid mt-4 gap-4'>
@@ -230,7 +236,10 @@ const Dashboard = () => {
 						</Transition>
 
 						<Transition appear show={showBudgetForm} as={Fragment}>
-							<Dialog as='div' className='relative z-10 sm:w-[600px]' onClose={toggleBudgetForm}>
+							<Dialog
+								as='div'
+								className='relative z-10 sm:w-[600px]'
+								onClose={toggleBudgetForm}>
 								<Transition.Child
 									as={Fragment}
 									enter='ease-out duration-300'
@@ -262,7 +271,10 @@ const Dashboard = () => {
 						</Transition>
 
 						<Transition appear show={showExpenseForm} as={Fragment}>
-							<Dialog as='div' className='relative z-10 sm:w-[600px]' onClose={toggleExpenseForm}>
+							<Dialog
+								as='div'
+								className='relative z-10 sm:w-[600px]'
+								onClose={toggleExpenseForm}>
 								<Transition.Child
 									as={Fragment}
 									enter='ease-out duration-300'
@@ -306,9 +318,13 @@ const Dashboard = () => {
 									</div>
 									{expenses && expenses.length > 0 && (
 										<div className='grid gap-6'>
-											<h2 className='text-alice text-xl font-heebo mt-12'>Recent Expenses</h2>
+											<h2 className='text-alice text-xl font-heebo mt-12'>
+												Recent Expenses
+											</h2>
 											<Table
-												expenses={expenses.sort((a, b) => b.createdAt - a.createdAt).slice(0, 8)}
+												expenses={expenses
+													.sort((a, b) => b.createdAt - a.createdAt)
+													.slice(0, 8)}
 											/>
 											{expenses.length > 6 && (
 												<Link

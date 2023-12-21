@@ -2,11 +2,6 @@ import { supabaseClient } from "./supabase";
 
 export const waait = () => new Promise((res) => setTimeout(res, Math.random() * 300));
 
-const generateRandomColor = () => {
-	const existingBudgetLength = fetchData("budgets")?.length ?? 0;
-	return `${existingBudgetLength * 34} 65% 50%`;
-};
-
 export const fetchData = (key) => {
 	return JSON.parse(localStorage.getItem(key));
 };
@@ -52,9 +47,7 @@ export const createBudget = async ({ name, amount }) => {
 	const newItem = {
 		id: crypto.randomUUID(),
 		name: name,
-		createdAt: Date.now(),
 		amount: +amount,
-		color: generateRandomColor(),
 	};
 
 	const { error } = await supabaseClient.from("budgets").insert(newItem);
@@ -66,11 +59,74 @@ export const createBudget = async ({ name, amount }) => {
 	return localStorage.setItem("budgets", JSON.stringify([...existingBudgets, newItem]));
 };
 
+export const insertUser = async (id, email, username) => {
+	console.log("Inserting the following user in the Users table", id, email, username);
+
+	if (!id && !email && !username) {
+		console.log("Missing parameters to insert user in Users table");
+		return;
+	}
+
+	const findUser = await getUserbyId(id);
+
+	if (findUser) {
+		console.log("User already exists", findUser);
+		return;
+	}
+
+	const { data, error } = await supabaseClient
+		.from("Users")
+		.insert([{ id: id, email: email, username: username }])
+		.select();
+
+	if (data) {
+		console.log("User inserted successfully", data);
+	}
+	if (error) {
+		console.log("Error inserting data in users table", error);
+	}
+};
+
+export const UpdateIncome = async (id, income) => {
+	console.log("Inserting the following user in the Users table", id, income);
+
+	if (!id && !income) {
+		console.log("Missing parameters to insert user in Users table");
+		return;
+	}
+
+	const { data, error } = await supabaseClient
+		.from("Users")
+		.select("*")
+		.eq("id", id)
+		.insert([{ income: income }])
+		.select();
+
+	if (data) {
+		console.log("Income added successfully", data);
+	}
+	if (error) {
+		console.log("Error inserting income in users data", error);
+	}
+};
+
+export const getUserbyId = async (id) => {
+	const { data, error } = await supabaseClient.from("Users").select("*").eq("id", id);
+
+	if (data) {
+		console.log("User found", data);
+		return data;
+	}
+	if (error) {
+		console.log("Error inserting data in users table", error);
+		return error;
+	}
+};
+
 export const createExpense = async ({ name, amount, budgetId }) => {
 	const newItem = {
 		id: crypto.randomUUID(),
 		name: name,
-		createdAt: Date.now(),
 		amount: +amount,
 		budgetId: budgetId,
 	};
