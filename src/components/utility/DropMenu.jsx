@@ -68,6 +68,12 @@ function downloadDataAsExcel() {
 		return;
 	}
 
+	const chartData = [
+		["Type", "Amount"],
+		["Budget", budgets.reduce((sum, budget) => sum + budget.amount, 0)],
+		["Expense", expenses.reduce((sum, expense) => sum + expense.amount, 0)],
+	];
+
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet(`${username} - ${getDate()}`);
 
@@ -124,6 +130,31 @@ function downloadDataAsExcel() {
 		downloadLink.click();
 		document.body.removeChild(downloadLink);
 	});
+
+	localStorage.setItem("chartData", JSON.stringify(chartData));
+}
+
+function makeChart() {
+	const username = JSON.parse(localStorage.getItem("userName"));
+	const income = JSON.parse(localStorage.getItem("income"));
+	const budgets = JSON.parse(localStorage.getItem("budgets"));
+	const expenses = JSON.parse(localStorage.getItem("expenses"));
+
+	if (!username || !income || !budgets || !expenses) {
+		console.error("Incomplete data in local storage.");
+		return;
+	}
+
+	const chartData = [
+		["Type", "Amount"],
+		["Budget", budgets.reduce((sum, budget) => sum + budget.amount, 0)],
+		["Expense", expenses.reduce((sum, expense) => sum + expense.amount, 0)],
+	];
+	localStorage.setItem("chartData", JSON.stringify(chartData));
+
+	setTimeout(() => {
+		return (document.location.href = "/stats");
+	}, 500);
 }
 
 export function DropMenu() {
@@ -170,6 +201,20 @@ export function DropMenu() {
 										"block px-4 py-2 text-sm w-full"
 									)}>
 									Download Data as excel
+								</button>
+							)}
+						</Menu.Item>
+
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type='button'
+									onClick={makeChart}
+									className={classNames(
+										active ? "bg-gray-100 text-navy" : "text-gray-700",
+										"block px-4 py-2 text-sm w-full"
+									)}>
+									Visualize Data
 								</button>
 							)}
 						</Menu.Item>
