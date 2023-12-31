@@ -3,7 +3,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install serve -g
 RUN npm ci
-RUN npm run build
 COPY . .
+RUN npm run build
 EXPOSE 3000
 CMD ["npm", "run", "serve"]
