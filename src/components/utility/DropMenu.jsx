@@ -1,0 +1,195 @@
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { FaRegUser } from "react-icons/fa6";
+import { toast } from "react-toastify";
+import { deleteItem, getDate } from "../../helpers";
+import * as ExcelJS from "exceljs";
+
+function classNames(...classes) {
+	return classes.filter(Boolean).join(" ");
+}
+
+function logout() {
+	deleteItem({
+		key: "userName",
+	});
+	deleteItem({
+		key: "income",
+	});
+	deleteItem({
+		key: "budgets",
+	});
+	deleteItem({
+		key: "expenses",
+	});
+
+	toast.success("You’ve deleted your account!");
+
+	setTimeout(() => {
+		return (document.location.href = "/");
+	}, 250);
+}
+
+function downloadDataAsJson() {
+	const storedObjects = [
+		JSON.parse(localStorage.getItem("userName")),
+		JSON.parse(localStorage.getItem("income")),
+		JSON.parse(localStorage.getItem("budgets")),
+		JSON.parse(localStorage.getItem("expenses")),
+	];
+
+	if (!storedObjects || !storedObjects.length) {
+		console.error("No objects to download.");
+		return;
+	}
+
+	const jsonString = JSON.stringify(storedObjects, null, 2);
+	const blob = new Blob([jsonString], { type: "application/json" });
+
+	const downloadLink = document.createElement("a");
+	downloadLink.href = URL.createObjectURL(blob);
+	downloadLink.download = "objects.json";
+
+	document.body.appendChild(downloadLink);
+	downloadLink.click();
+	document.body.removeChild(downloadLink);
+
+	return toast.success("Your data has been downloaded!");
+}
+
+function downloadDataAsExcel() {
+	const username = JSON.parse(localStorage.getItem("userName"));
+	const income = JSON.parse(localStorage.getItem("income"));
+	const budgets = JSON.parse(localStorage.getItem("budgets"));
+	const expenses = JSON.parse(localStorage.getItem("expenses"));
+
+	if (!username || !income || !budgets || !expenses) {
+		console.error("Incomplete data in local storage. Cannot download Excel file.");
+		return;
+	}
+
+	const workbook = new ExcelJS.Workbook();
+	const worksheet = workbook.addWorksheet(`${username} - ${getDate()}`);
+
+	const data = [
+		["User", "Type", "Date", "Name", "Category", "Amount"],
+		...budgets.map((budget) => [
+			username,
+			"Budget",
+			budget.createdAt,
+			budget.name,
+			budget.name,
+			budget.amount,
+		]),
+		...expenses.map((expense) => [
+			username,
+			"Expense",
+			expense.createdAt,
+			expense.name,
+			expense.budgetName,
+			expense.amount,
+		]),
+	];
+
+	worksheet.addRows(data);
+
+	budgets.forEach((budget, index) => {
+		const row = worksheet.getRow(index + 2);
+		row.fill = {
+			type: "pattern",
+			pattern: "solid",
+			fgColor: { argb: "00FF00" },
+		};
+	});
+
+	expenses.forEach((expense, index) => {
+		const row = worksheet.getRow(index + 2 + budgets.length);
+		row.fill = {
+			type: "pattern",
+			pattern: "solid",
+			fgColor: { argb: "FF6347" },
+		};
+	});
+
+	workbook.xlsx.writeBuffer().then((buffer) => {
+		const blob = new Blob([buffer], {
+			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+		});
+
+		const downloadLink = document.createElement("a");
+		downloadLink.href = URL.createObjectURL(blob);
+		downloadLink.download = "data.xlsx";
+
+		document.body.appendChild(downloadLink);
+		downloadLink.click();
+		document.body.removeChild(downloadLink);
+	});
+}
+
+export function DropMenu() {
+	return (
+		<Menu as='div' className='relative inline-flex text-left'>
+			<div>
+				<Menu.Button className='uppercase flex items-center justify-center rounded-md bg-alice gap-2 px-3 py-2 text-sm font-semibold text-navy shadow-sm ring-1 ring-inset ring-navy hover:bg-gray-100'>
+					Account
+					<FaRegUser className='h-3 w-3 text-navy' aria-hidden='true' />
+				</Menu.Button>
+			</div>
+
+			<Transition
+				as={Fragment}
+				enter='transition ease-out duration-100'
+				enterFrom='transform opacity-0 scale-95'
+				enterTo='transform opacity-100 scale-100'
+				leave='transition ease-in duration-75'
+				leaveFrom='transform opacity-100 scale-100'
+				leaveTo='transform opacity-0 scale-95'>
+				<Menu.Items className='absolute right-0 z-10 mt-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+					<div className='py-1'>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type='button'
+									onClick={downloadDataAsJson}
+									className={classNames(
+										active ? "bg-gray-100 text-navy" : "text-gray-700",
+										"block px-4 py-2 text-sm w-full"
+									)}>
+									Download Data as JSON
+								</button>
+							)}
+						</Menu.Item>
+
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type='button'
+									onClick={downloadDataAsExcel}
+									className={classNames(
+										active ? "bg-gray-100 text-navy" : "text-gray-700",
+										"block px-4 py-2 text-sm w-full"
+									)}>
+									Download Data as excel
+								</button>
+							)}
+						</Menu.Item>
+
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type='button'
+									onClick={logout}
+									className={classNames(
+										active ? "bg-gray-100 text-navy" : "text-gray-700",
+										"block w-full px-4 py-2  text-sm"
+									)}>
+									Sign out
+								</button>
+							)}
+						</Menu.Item>
+					</div>
+				</Menu.Items>
+			</Transition>
+		</Menu>
+	);
+}
