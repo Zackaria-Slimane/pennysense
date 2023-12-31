@@ -1,10 +1,6 @@
 import { Link, useFetcher } from "react-router-dom";
 import { FiXCircle } from "react-icons/fi";
-import {
-	formatCurrency,
-	formatDateToLocaleString,
-	getAllMatchingItems,
-} from "../helpers";
+import { formatCurrency, getAllMatchingItems, formatDate } from "../helpers";
 
 const ExpenseItem = ({ expense, showBudget }) => {
 	const fetcher = useFetcher();
@@ -22,17 +18,11 @@ const ExpenseItem = ({ expense, showBudget }) => {
 				{formatCurrency(expense.amount)}
 			</td>
 			<td className='text-navy text-xs sm:text-base text-center'>
-				{formatDateToLocaleString(expense.createdAt)}
+				{formatDate(expense.createdAt)}
 			</td>
 			{showBudget && (
 				<td className='text-navy text-sm sm:text-base text-center'>
-					<Link
-						to={`/budget/${budget.id}`}
-						style={{
-							"--accent": budget.color,
-						}}>
-						{budget.name}
-					</Link>
+					<Link to={`/budget/${budget.id}`}>{budget.name}</Link>
 				</td>
 			)}
 			<td>
