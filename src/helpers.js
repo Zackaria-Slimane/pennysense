@@ -5,7 +5,7 @@ export const getDate = () => {
 	const year = currentDate.getFullYear();
 	const month = currentDate.getMonth() + 1;
 	const day = currentDate.getDate();
-	return `${year}-${month}-${day}`;
+	return `${day}-${month}-${year}`;
 };
 
 export const fetchData = (key) => {

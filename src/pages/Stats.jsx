@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
+
 import Chart from "chart.js/auto";
 
 export function Stats() {
 	const [chartData, setChartData] = useState(null);
+
+	const currentDate = new Date();
+	const year = currentDate.getFullYear();
+	const month = currentDate.getMonth() + 1;
+
+	function printDate() {
+		return `${month} / ${year}`;
+	}
 
 	useEffect(() => {
 		const storedChartData = JSON.parse(localStorage.getItem("chartData"));
@@ -49,6 +58,11 @@ export function Stats() {
 
 	return (
 		<div className='w-full mx-auto py-10 min-h-screen'>
+			<div>
+				<h2 className='text-alice text-center text-xl mb-12'>
+					Your spending report as of <span> {printDate()} </span>{" "}
+				</h2>
+			</div>
 			<canvas id='myChart'></canvas>
 		</div>
 	);
