@@ -2,7 +2,7 @@ import { Link, useFetcher } from "react-router-dom";
 import { FiXCircle } from "react-icons/fi";
 import { formatCurrency, getAllMatchingItems, formatDate } from "../helpers";
 
-const ExpenseItem = ({ expense, showBudget }) => {
+export function ExpenseItem({ expense, showBudget }) {
 	const fetcher = useFetcher();
 
 	const budget = getAllMatchingItems({
@@ -39,5 +39,4 @@ const ExpenseItem = ({ expense, showBudget }) => {
 			</td>
 		</>
 	);
-};
-export default ExpenseItem;
+}

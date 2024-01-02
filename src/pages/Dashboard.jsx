@@ -4,11 +4,11 @@ import { Link, useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
 import { BsCurrencyExchange, BsCalculator, BsCartCheck } from "react-icons/bs";
 import { getTotalExpenses, getTotalBudgets } from "../helpers";
-import Intro from "../components/Intro";
-import AddBudgetForm from "../components/AddBudgetForm";
-import AddExpenseForm from "../components/AddExpenseForm";
-import BudgetItem from "../components/BudgetItem";
-import Table from "../components/Table";
+import { Intro } from "../components/Intro";
+import { AddBudgetForm } from "../components/AddBudgetForm";
+import { AddExpenseForm } from "../components/AddExpenseForm";
+import { BudgetItem } from "../components/BudgetItem";
+import { Table } from "../components/Table";
 
 import { createBudget, createExpense, deleteItem, fetchData, waait } from "../helpers";
 
@@ -72,7 +72,7 @@ export async function dashboardAction({ request }) {
 	}
 }
 
-const Dashboard = () => {
+export function Dashboard() {
 	const { userName, budgets, expenses } = useLoaderData();
 	const [modalOpen, setModalOpen] = useState(false);
 	const [income, setIncome] = useState(localStorage.getItem("income") || 0);
@@ -317,5 +317,4 @@ const Dashboard = () => {
 			)}
 		</>
 	);
-};
-export default Dashboard;
+}

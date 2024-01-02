@@ -1,7 +1,8 @@
 import { useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
-import Table from "../components/Table";
+import { Table } from "../components/Table";
 import { deleteItem, fetchData } from "../helpers";
+
 export async function expensesLoader() {
 	const expenses = fetchData("expenses");
 	return { expenses };
@@ -24,7 +25,7 @@ export async function expensesAction({ request }) {
 	}
 }
 
-const ExpensesPage = () => {
+export function ExpensesPage() {
 	const { expenses } = useLoaderData();
 	return (
 		<div className='grid gap-8'>
@@ -41,6 +42,4 @@ const ExpensesPage = () => {
 			)}
 		</div>
 	);
-};
-
-export default ExpensesPage;
+}

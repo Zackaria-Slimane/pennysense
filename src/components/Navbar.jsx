@@ -1,20 +1,14 @@
 import { useEffect, useState } from "react";
-import { Form, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { fetchData } from "../helpers";
 import { DropMenu } from "./utility/DropMenu";
 
-const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }) => {
+export function Navbar() {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
 		setUser(fetchData("userName"));
-	});
-
-	const confirmLogout = (e) => {
-		if (!window.confirm("Are you sure you want to logout?")) {
-			e.preventDefault();
-		}
-	};
+	}, []);
 
 	return (
 		<nav className='w-full max-w-[1200px] mx-auto flex py-6 justify-between items-center navbar'>
@@ -33,6 +27,4 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen }) => {
 			)}
 		</nav>
 	);
-};
-
-export default Navbar;
+}

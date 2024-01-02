@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { Form, useFetcher } from "react-router-dom";
+import { useFetcher } from "react-router-dom";
 import { FaDollarSign } from "react-icons/fa6";
 
-const AddBudgetForm = () => {
+export function AddBudgetForm() {
 	const fetcher = useFetcher();
 	const isSubmitting = fetcher.state === "submitting";
 	const formRef = useRef();
@@ -65,5 +65,4 @@ const AddBudgetForm = () => {
 			</fetcher.Form>
 		</div>
 	);
-};
-export default AddBudgetForm;
+}

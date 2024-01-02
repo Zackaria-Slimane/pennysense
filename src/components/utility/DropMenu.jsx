@@ -39,7 +39,8 @@ function downloadDataAsJson() {
 	];
 
 	if (!storedObjects || !storedObjects.length) {
-		console.error("No objects to download.");
+		console.error("No data to download.");
+		toast.error("Incomplete data in  storage. Cannot download  file.");
 		return;
 	}
 
@@ -65,6 +66,7 @@ function downloadDataAsExcel() {
 
 	if (!username || !income || !budgets || !expenses) {
 		console.error("Incomplete data in local storage. Cannot download Excel file.");
+		toast.error("Incomplete data in local storage. Cannot download Excel file.");
 		return;
 	}
 
@@ -142,6 +144,7 @@ function makeChart() {
 
 	if (!username || !income || !budgets || !expenses) {
 		console.error("Incomplete data in local storage.");
+		toast.error("Incomplete data (Income, budgets, expenses), cannot make charts yet.");
 		return;
 	}
 

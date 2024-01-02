@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router-dom";
 import { FaFileCirclePlus } from "react-icons/fa6";
 
-const AddExpenseForm = ({ budgets }) => {
+export function AddExpenseForm({ budgets }) {
 	const fetcher = useFetcher();
 	const isSubmitting = fetcher.state === "submitting";
 	const formRef = useRef();
@@ -93,5 +93,4 @@ const AddExpenseForm = ({ budgets }) => {
 			</fetcher.Form>
 		</div>
 	);
-};
-export default AddExpenseForm;
+}

@@ -1,9 +1,10 @@
 import { useLoaderData } from "react-router-dom";
-import { toast } from "react-toastify";
-import AddExpenseForm from "../components/AddExpenseForm";
-import BudgetItem from "../components/BudgetItem";
-import Table from "../components/Table";
+import { AddExpenseForm } from "../components/AddExpenseForm";
+import { BudgetItem } from "../components/BudgetItem";
+import { Table } from "../components/Table";
 import { createExpense, deleteItem, getAllMatchingItems } from "../helpers";
+import { toast } from "react-toastify";
+
 export async function budgetLoader({ params }) {
 	const budget = await getAllMatchingItems({
 		category: "budgets",
@@ -54,7 +55,7 @@ export async function budgetAction({ request }) {
 	}
 }
 
-const BudgetPage = () => {
+export function BudgetPage() {
 	const { budget, expenses } = useLoaderData();
 
 	return (
@@ -76,5 +77,4 @@ const BudgetPage = () => {
 			)}
 		</div>
 	);
-};
-export default BudgetPage;
+}

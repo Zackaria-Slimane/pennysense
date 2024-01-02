@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { Outlet, useLoaderData } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import { Outlet } from "react-router-dom";
+import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import { fetchData } from "../helpers";
+
 export function mainLoader() {
 	const userName = fetchData("userName");
 	return { userName };
 }
 
-const Main = () => {
+export function Main() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-	const { userName } = useLoaderData();
 
 	return (
 		<div className='min-h-screen h-full w-full mx-auto overflow-x-hidden overflow-y-scroll bg-gray-950 relative isolate'>
@@ -32,5 +32,4 @@ const Main = () => {
 			<Footer />
 		</div>
 	);
-};
-export default Main;
+}

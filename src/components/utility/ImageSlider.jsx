@@ -24,7 +24,7 @@ const ImageTiles = [
 	},
 ];
 
-const ImageSlider = () => {
+export function ImageSlider() {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
 	useEffect(() => {
@@ -44,6 +44,4 @@ const ImageSlider = () => {
 			/>
 		</div>
 	);
-};
-
-export default ImageSlider;
+}

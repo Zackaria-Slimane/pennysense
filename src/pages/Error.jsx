@@ -1,6 +1,6 @@
 import { useRouteError, Link, useNavigate } from "react-router-dom";
 
-const Error = () => {
+export function Error() {
 	const error = useRouteError();
 	const navigate = useNavigate();
 
@@ -10,9 +10,7 @@ const Error = () => {
 			<p className='text-tomato'>{error.message || error.statusText}</p>
 			<div className='flex gap-6'>
 				<button className='' onClick={() => navigate(-1)}>
-					<span className='bg-tomato text-alice px-4 py-1 rounded-lg text-lg'>
-						Go Back
-					</span>
+					<span className='bg-tomato text-alice px-4 py-1 rounded-lg text-lg'>Go Back</span>
 				</button>
 				<Link to='/' className=''>
 					<span className='bg-alice text-navy px-4 py-1 rounded-lg text-lg'>Go home</span>
@@ -20,5 +18,4 @@ const Error = () => {
 			</div>
 		</div>
 	);
-};
-export default Error;
+}

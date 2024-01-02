@@ -1,7 +1,7 @@
 import { FaRegCopyright, FaGithub } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 
-const Footer = () => {
+export function Footer() {
 	let getCurrentYear = new Date().getFullYear();
 	return (
 		<footer
@@ -15,10 +15,7 @@ const Footer = () => {
 						alt='Pennies stack - Penny sense logo'
 					/>
 				</NavLink>
-				<NavLink
-					to='https://github.com/Zackaria-Slimane'
-					target='_blank'
-					rel='noreferrer noopener'>
+				<NavLink to='https://github.com/Zackaria-Slimane' target='_blank' rel='noreferrer noopener'>
 					<FaGithub className='w-10 h-5 text-alice hover:text-fluo hover:scale-110 hover:rotate-12' />
 				</NavLink>
 				<NavLink
@@ -32,6 +29,4 @@ const Footer = () => {
 			</div>
 		</footer>
 	);
-};
-
-export default Footer;
+}

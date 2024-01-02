@@ -2,9 +2,9 @@ import { Form } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import { fetchData } from "../helpers";
 import { FaUserPlus } from "react-icons/fa6";
-import ImageSlider from "../components/utility/ImageSlider";
+import { ImageSlider } from "../components/utility/ImageSlider";
 
-const Intro = () => {
+export function Intro() {
 	const userName = fetchData("userName");
 
 	return (
@@ -16,8 +16,8 @@ const Intro = () => {
 						<span className='text-fluo'>Penny Sense</span>.
 					</h1>
 					<p className='text-center sm:text-start relative mt-6 text-lg text-alice sm:max-w-md lg:max-w-none'>
-						Budgeting Made <span className='text-fluo font-bold'>Simple</span> , Results
-						Made <span className='text-fluo font-bold'>Significant</span>.
+						Budgeting Made <span className='text-fluo font-bold'>Simple</span> , Results Made{" "}
+						<span className='text-fluo font-bold'>Significant</span>.
 					</p>
 
 					<p className='text-center sm:text-start relative mt-1 text-lg leading-8 text-alice sm:max-w-md lg:max-w-none'>
@@ -84,5 +84,4 @@ const Intro = () => {
 			</div>
 		</div>
 	);
-};
-export default Intro;
+}
