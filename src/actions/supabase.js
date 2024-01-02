@@ -14,6 +14,4 @@ const options = {
 	},
 };
 const supabase = createClient(supabaseUrl, supabaseKey, options);
-
-console.log("Supabase client created !.");
 export default supabase;

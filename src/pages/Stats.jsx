@@ -13,6 +13,12 @@ export function Stats() {
 		return `${month} / ${year}`;
 	}
 
+	function goHome() {
+		setTimeout(() => {
+			window.location.href = "/";
+		}, 500);
+	}
+
 	useEffect(() => {
 		const storedChartData = JSON.parse(localStorage.getItem("chartData"));
 
@@ -58,10 +64,17 @@ export function Stats() {
 
 	return (
 		<div className='w-full mx-auto py-10 min-h-screen'>
-			<div>
-				<h2 className='text-alice text-center text-xl mb-12'>
+			<div className='grid grid-cols-1 gap-6 mb-14'>
+				<h2 className='text-alice text-center text-xl'>
 					Your spending report as of <span> {printDate()} </span>{" "}
 				</h2>
+				<div className='flex justify-center'>
+					<button
+						className='bg-alice text-tomato hover:bg-alice/90 px-4 py-2 rounded-md'
+						onClick={goHome}>
+						Back to home
+					</button>
+				</div>
 			</div>
 			<canvas id='myChart'></canvas>
 		</div>

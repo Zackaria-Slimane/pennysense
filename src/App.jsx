@@ -28,11 +28,6 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "stats",
-				element: <Stats />,
-				errorElement: <Error />,
-			},
-			{
 				path: "budget/:id",
 				element: <BudgetPage />,
 				loader: budgetLoader,
@@ -57,6 +52,15 @@ const router = createBrowserRouter([
 				action: logoutAction,
 			},
 		],
+	},
+	{
+		path: "/stats",
+		element: <Stats />,
+		errorElement: <Error />,
+	},
+	{
+		path: "*",
+		element: <Error />,
 	},
 ]);
 
