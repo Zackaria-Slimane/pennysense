@@ -153,6 +153,7 @@ export function Dashboard() {
 								<span>Add Expense</span> <BsCartCheck />
 							</button>
 						</div>
+
 						<Transition appear show={modalOpen} as={Fragment}>
 							<Dialog as='div' className='relative z-10' onClose={closeModal}>
 								<Transition.Child
