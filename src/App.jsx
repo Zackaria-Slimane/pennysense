@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { Main, mainLoader } from "./layouts/Main";
 
 import { deleteBudget } from "./actions/deleteBudget";
@@ -67,5 +66,3 @@ export function App() {
 		</div>
 	);
 }
-
-

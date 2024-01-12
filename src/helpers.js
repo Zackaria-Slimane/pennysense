@@ -47,6 +47,19 @@ export const createBudget = ({ name, amount }) => {
 	return localStorage.setItem("budgets", JSON.stringify([...existingBudgets, newItem]));
 };
 
+export const updateBudget = ({ id, name, amount }) => {
+	const existingBudgets = fetchData("budgets") ?? [];
+	const updatedBudgets = existingBudgets.map((budget) => {
+		if (budget.id !== id) return budget;
+		return {
+			...budget,
+			name: name,
+			amount: +amount,
+		};
+	});
+	return localStorage.setItem("budgets", JSON.stringify(updatedBudgets));
+};
+
 export const createExpense = ({ name, amount, budgetId }) => {
 	const budgetName = getAllMatchingItems({ category: "budgets", key: "id", value: budgetId })[0]
 		.name;
@@ -60,6 +73,20 @@ export const createExpense = ({ name, amount, budgetId }) => {
 	};
 	const existingExpenses = fetchData("expenses") ?? [];
 	return localStorage.setItem("expenses", JSON.stringify([...existingExpenses, newItem]));
+};
+
+export const updateExpense = ({ id, name, amount, budgetId }) => {
+	const existingExpenses = fetchData("expenses") ?? [];
+	const updatedExpenses = existingExpenses.map((expense) => {
+		if (expense.id !== id) return expense;
+		return {
+			...expense,
+			name: name,
+			amount: +amount,
+			budgetId: budgetId,
+		};
+	});
+	return localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
 };
 
 export const calculateSpentByBudget = (budgetId) => {
