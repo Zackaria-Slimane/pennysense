@@ -28,7 +28,17 @@ export async function dashboardAction({ request }) {
 	if (_action === "newUser") {
 		try {
 			localStorage.setItem("userName", JSON.stringify(values.userName));
-			return toast.success(`Welcome, ${values.userName}`);
+			if (values.userName != "rimane") {
+				return toast.success(`Welcome, ${values.userName}`);
+			}
+			if (
+				values.userName == "rimane" ||
+				values.userName == "Rimane" ||
+				values.userName == "RIMANE" ||
+				values.userName == "narimane"
+			) {
+				return toast.success(`Hi baby ,so glad you're trying it <3`);
+			}
 		} catch (e) {
 			throw new Error("There was a problem creating your account.");
 		}
@@ -121,7 +131,17 @@ export function Dashboard() {
 					<div className='flex flex-wrap justify-center sm:justify-between items-center py-4'>
 						{/* header */}
 						<h1 className='text-3xl sm:text-5xl text-alice font-jetBrain py-6'>
-							Welcome back, <span className='text-fluo capitalize'>{userName}</span>
+							{userName != "rimane" ? (
+								<span>
+									{" "}
+									Welcome back, <span className='text-fluo capitalize'>{userName}</span>{" "}
+								</span>
+							) : (
+								<span>
+									Welcome back baby, <span className='text-fluo'> je taymk </span>{" "}
+								</span>
+							)}
+
 							<br />
 							<span className='text-lg mt-2'>
 								You have <span className='text-fluo'>$ {availableBudget} </span> left to spend this
@@ -133,7 +153,7 @@ export function Dashboard() {
 						</h1>
 
 						{/* action buttons */}
-						<div className='flex lg:flex-col gap-4 justify-end items-end font-jetBrain'>
+						<div className='flex flex-wrap justify-around  lg:flex-col gap-4 sm:justify-end items-end font-jetBrain'>
 							<button
 								type='button'
 								onClick={openModal}
