@@ -1,21 +1,21 @@
-import { useState, Fragment, useRef, useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { Link, useLoaderData } from "react-router-dom";
-import { toast } from "react-toastify";
-import { BsCurrencyExchange, BsCalculator, BsCartCheck } from "react-icons/bs";
-import { getTotalExpenses, getTotalBudgets } from "../helpers";
-import { Intro } from "../components/Intro";
-import { AddBudgetForm } from "../components/AddBudgetForm";
-import { AddExpenseForm } from "../components/AddExpenseForm";
-import { BudgetItem } from "../components/BudgetItem";
-import { Table } from "../components/Table";
+import { useState, Fragment, useRef, useEffect } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { Link, useLoaderData } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { BsCurrencyExchange, BsCalculator, BsCartCheck } from 'react-icons/bs';
+import { getTotalExpenses, getTotalBudgets } from '../helpers';
+import { Intro } from '../components/Intro';
+import { AddBudgetForm } from '../components/AddBudgetForm';
+import { AddExpenseForm } from '../components/AddExpenseForm';
+import { BudgetItem } from '../components/BudgetItem';
+import { Table } from '../components/Table';
 
-import { createBudget, createExpense, deleteItem, fetchData, waait } from "../helpers";
+import { createBudget, createExpense, deleteItem, fetchData, waait } from '../helpers';
 
 export function dashboardLoader() {
-	const userName = fetchData("userName");
-	const budgets = fetchData("budgets");
-	const expenses = fetchData("expenses");
+	const userName = fetchData('userName');
+	const budgets = fetchData('budgets');
+	const expenses = fetchData('expenses');
 	return { userName, budgets, expenses };
 }
 
@@ -25,38 +25,39 @@ export async function dashboardAction({ request }) {
 	const data = await request.formData();
 	const { _action, ...values } = Object.fromEntries(data);
 
-	if (_action === "newUser") {
+	if (_action === 'newUser') {
 		try {
-			localStorage.setItem("userName", JSON.stringify(values.userName));
-			if (values.userName != "rimane") {
+			localStorage.setItem('userName', JSON.stringify(values.userName));
+
+			if (values.userName != 'rimane') {
 				return toast.success(`Welcome, ${values.userName}`);
 			}
 			if (
-				values.userName == "rimane" ||
-				values.userName == "Rimane" ||
-				values.userName == "RIMANE" ||
-				values.userName == "narimane"
+				values.userName == 'rimane' ||
+				values.userName == 'Rimane' ||
+				values.userName == 'RIMANE' ||
+				values.userName == 'Riri'
 			) {
 				return toast.success(`Hi baby ,so glad you're trying it <3`);
 			}
 		} catch (e) {
-			throw new Error("There was a problem creating your account.");
+			throw new Error('There was a problem creating your account.');
 		}
 	}
 
-	if (_action === "createBudget") {
+	if (_action === 'createBudget') {
 		try {
 			createBudget({
 				name: values.newBudget,
 				amount: values.newBudgetAmount,
 			});
-			return toast.success("Budget created!");
+			return toast.success('Budget created!');
 		} catch (e) {
-			throw new Error("There was a problem creating your budget.");
+			throw new Error('There was a problem creating your budget.');
 		}
 	}
 
-	if (_action === "createExpense") {
+	if (_action === 'createExpense') {
 		try {
 			createExpense({
 				name: values.newExpense,
@@ -65,19 +66,19 @@ export async function dashboardAction({ request }) {
 			});
 			return toast.success(`Expense ${values.newExpense} created!`);
 		} catch (e) {
-			throw new Error("There was a problem creating your expense.");
+			throw new Error('There was a problem creating your expense.');
 		}
 	}
 
-	if (_action === "deleteExpense") {
+	if (_action === 'deleteExpense') {
 		try {
 			deleteItem({
-				key: "expenses",
+				key: 'expenses',
 				id: values.expenseId,
 			});
-			return toast.success("Expense deleted!");
+			return toast.success('Expense deleted!');
 		} catch (e) {
-			throw new Error("There was a problem deleting your expense.");
+			throw new Error('There was a problem deleting your expense.');
 		}
 	}
 }
@@ -85,7 +86,7 @@ export async function dashboardAction({ request }) {
 export function Dashboard() {
 	const { userName, budgets, expenses } = useLoaderData();
 	const [modalOpen, setModalOpen] = useState(false);
-	const [income, setIncome] = useState(localStorage.getItem("income") || 0);
+	const [income, setIncome] = useState(localStorage.getItem('income') || 0);
 	const [showBudgetForm, setShowBudgetForm] = useState(false);
 	const [showExpenseForm, setShowExpenseForm] = useState(false);
 	const incomeRef = useRef(null);
@@ -119,7 +120,7 @@ export function Dashboard() {
 
 	function saveIncome() {
 		setIncome(incomeRef.current.value);
-		localStorage.setItem("income", incomeRef.current.value);
+		localStorage.setItem('income', incomeRef.current.value);
 		toast.success(`${incomeRef.current.value} saved as income !`);
 		closeModal();
 	}
@@ -131,14 +132,14 @@ export function Dashboard() {
 					<div className='flex flex-wrap justify-center sm:justify-between items-center py-4'>
 						{/* header */}
 						<h1 className='text-3xl sm:text-5xl text-alice font-jetBrain py-6'>
-							{userName != "rimane" ? (
+							{userName != 'rimane' ? (
 								<span>
-									{" "}
-									Welcome back, <span className='text-fluo capitalize'>{userName}</span>{" "}
+									{' '}
+									Welcome back, <span className='text-fluo capitalize'>{userName}</span>{' '}
 								</span>
 							) : (
 								<span>
-									Welcome back baby, <span className='text-fluo'> je taymk </span>{" "}
+									Welcome back baby, <span className='text-fluo'> je taymk </span>{' '}
 								</span>
 							)}
 
@@ -147,7 +148,7 @@ export function Dashboard() {
 								You have <span className='text-fluo'>$ {availableBudget} </span> left to spend this
 								month.
 								<br />
-								Spent <span className='text-tomato'>$ {totalExpenses} </span> so far out of{" "}
+								Spent <span className='text-tomato'>$ {totalExpenses} </span> so far out of{' '}
 								<span className='text-sunny'> $ {totalBudgets} </span> budgeted.
 							</span>
 						</h1>
