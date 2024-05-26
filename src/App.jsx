@@ -1,19 +1,19 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Main, mainLoader } from "./layouts/Main";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Main, mainLoader } from './layouts/Main';
 
-import { deleteBudget } from "./actions/deleteBudget";
+import { deleteBudget } from './actions/deleteBudget';
 
-import { Dashboard, dashboardAction, dashboardLoader } from "./pages/Dashboard";
-import { BudgetPage, budgetAction, budgetLoader } from "./pages/BudgetPage";
-import { ExpensesPage, expensesAction, expensesLoader } from "./pages/ExpensesPage";
-import { Error } from "./pages/Error";
-import { Stats } from "./pages/Stats";
+import { Dashboard, dashboardAction, dashboardLoader } from './pages/Dashboard';
+import { BudgetPage, budgetAction, budgetLoader } from './pages/BudgetPage';
+import { ExpensesPage, expensesAction, expensesLoader } from './pages/ExpensesPage';
+import { Error } from './pages/Error';
+import { Stats } from './pages/Stats';
 
 const router = createBrowserRouter([
 	{
-		path: "/",
+		path: '/',
 		element: <Main />,
 		loader: mainLoader,
 		errorElement: <Error />,
@@ -26,20 +26,20 @@ const router = createBrowserRouter([
 				errorElement: <Error />,
 			},
 			{
-				path: "budget/:id",
+				path: 'budget/:id',
 				element: <BudgetPage />,
 				loader: budgetLoader,
 				action: budgetAction,
 				errorElement: <Error />,
 				children: [
 					{
-						path: "delete",
+						path: 'delete',
 						action: deleteBudget,
 					},
 				],
 			},
 			{
-				path: "expenses",
+				path: 'expenses',
 				element: <ExpensesPage />,
 				loader: expensesLoader,
 				action: expensesAction,
@@ -48,12 +48,12 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/stats",
+		path: '/stats',
 		element: <Stats />,
 		errorElement: <Error />,
 	},
 	{
-		path: "*",
+		path: '*',
 		element: <Error />,
 	},
 ]);
