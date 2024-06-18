@@ -1,89 +1,97 @@
-import { Fragment } from "react";
-import { Menu, Transition } from "@headlessui/react";
-import { FaRegUser } from "react-icons/fa6";
-import { toast } from "react-toastify";
-import { deleteItem, getDate } from "../../helpers";
-import * as ExcelJS from "exceljs";
+import { Fragment } from 'react';
+import { Menu, Transition } from '@headlessui/react';
+import { FaRegUser } from 'react-icons/fa6';
+import { toast } from 'react-toastify';
+import { deleteItem, getDate } from '../../helpers';
+import * as ExcelJS from 'exceljs';
 
 function classNames(...classes) {
-	return classes.filter(Boolean).join(" ");
+	return classes.filter(Boolean).join(' ');
 }
 
 function logout() {
 	deleteItem({
-		key: "userName",
+		key: 'userName',
 	});
 	deleteItem({
-		key: "income",
+		key: 'income',
 	});
 	deleteItem({
-		key: "budgets",
+		key: 'budgets',
 	});
 	deleteItem({
-		key: "expenses",
+		key: 'expenses',
 	});
 
-	toast.success("You’ve deleted your account!");
+	toast.success('You’ve deleted your account!');
+	window.location.replace('/');
+}
 
-	setTimeout(() => {
-		return (document.location.href = "/");
-	}, 250);
+function resetData() {
+	deleteItem({
+		key: 'income',
+	});
+	deleteItem({
+		key: 'expenses',
+	});
+	toast.success('Data has been reset!');
+	window.location.reload();
 }
 
 function downloadDataAsJson() {
 	const storedObjects = [
-		JSON.parse(localStorage.getItem("userName")),
-		JSON.parse(localStorage.getItem("income")),
-		JSON.parse(localStorage.getItem("budgets")),
-		JSON.parse(localStorage.getItem("expenses")),
+		JSON.parse(localStorage.getItem('userName')),
+		JSON.parse(localStorage.getItem('income')),
+		JSON.parse(localStorage.getItem('budgets')),
+		JSON.parse(localStorage.getItem('expenses')),
 	];
 
 	if (!storedObjects || !storedObjects.length) {
-		console.error("No data to download.");
-		toast.error("Incomplete data in  storage. Cannot download  file.");
+		console.error('No data to download.');
+		toast.error('Incomplete data in  storage. Cannot download  file.');
 		return;
 	}
 
 	const jsonString = JSON.stringify(storedObjects, null, 2);
-	const blob = new Blob([jsonString], { type: "application/json" });
+	const blob = new Blob([jsonString], { type: 'application/json' });
 
-	const downloadLink = document.createElement("a");
+	const downloadLink = document.createElement('a');
 	downloadLink.href = URL.createObjectURL(blob);
-	downloadLink.download = "objects.json";
+	downloadLink.download = 'objects.json';
 
 	document.body.appendChild(downloadLink);
 	downloadLink.click();
 	document.body.removeChild(downloadLink);
 
-	return toast.success("Your data has been downloaded!");
+	return toast.success('Your data has been downloaded!');
 }
 
 function downloadDataAsExcel() {
-	const username = JSON.parse(localStorage.getItem("userName"));
-	const income = JSON.parse(localStorage.getItem("income"));
-	const budgets = JSON.parse(localStorage.getItem("budgets"));
-	const expenses = JSON.parse(localStorage.getItem("expenses"));
+	const username = JSON.parse(localStorage.getItem('userName'));
+	const income = JSON.parse(localStorage.getItem('income'));
+	const budgets = JSON.parse(localStorage.getItem('budgets'));
+	const expenses = JSON.parse(localStorage.getItem('expenses'));
 
 	if (!username || !income || !budgets || !expenses) {
-		console.error("Incomplete data in local storage. Cannot download Excel file.");
-		toast.error("Incomplete data in local storage. Cannot download Excel file.");
+		console.error('Incomplete data in local storage. Cannot download Excel file.');
+		toast.error('Incomplete data in local storage. Cannot download Excel file.');
 		return;
 	}
 
 	const chartData = [
-		["Type", "Amount"],
-		["Budget", budgets.reduce((sum, budget) => sum + budget.amount, 0)],
-		["Expense", expenses.reduce((sum, expense) => sum + expense.amount, 0)],
+		['Type', 'Amount'],
+		['Budget', budgets.reduce((sum, budget) => sum + budget.amount, 0)],
+		['Expense', expenses.reduce((sum, expense) => sum + expense.amount, 0)],
 	];
 
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet(`${username} - ${getDate()}`);
 
 	const data = [
-		["User", "Type", "Date", "Name", "Category", "Amount"],
+		['User', 'Type', 'Date', 'Name', 'Category', 'Amount'],
 		...budgets.map((budget) => [
 			username,
-			"Budget",
+			'Budget',
 			budget.createdAt,
 			budget.name,
 			budget.name,
@@ -91,7 +99,7 @@ function downloadDataAsExcel() {
 		]),
 		...expenses.map((expense) => [
 			username,
-			"Expense",
+			'Expense',
 			expense.createdAt,
 			expense.name,
 			expense.budgetName,
@@ -104,60 +112,58 @@ function downloadDataAsExcel() {
 	budgets.forEach((budget, index) => {
 		const row = worksheet.getRow(index + 2);
 		row.fill = {
-			type: "pattern",
-			pattern: "solid",
-			fgColor: { argb: "00FF00" },
+			type: 'pattern',
+			pattern: 'solid',
+			fgColor: { argb: '00FF00' },
 		};
 	});
 
 	expenses.forEach((expense, index) => {
 		const row = worksheet.getRow(index + 2 + budgets.length);
 		row.fill = {
-			type: "pattern",
-			pattern: "solid",
-			fgColor: { argb: "FF6347" },
+			type: 'pattern',
+			pattern: 'solid',
+			fgColor: { argb: 'FF6347' },
 		};
 	});
 
 	workbook.xlsx.writeBuffer().then((buffer) => {
 		const blob = new Blob([buffer], {
-			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+			type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 		});
 
-		const downloadLink = document.createElement("a");
+		const downloadLink = document.createElement('a');
 		downloadLink.href = URL.createObjectURL(blob);
-		downloadLink.download = "data.xlsx";
+		downloadLink.download = 'data.xlsx';
 
 		document.body.appendChild(downloadLink);
 		downloadLink.click();
 		document.body.removeChild(downloadLink);
 	});
 
-	localStorage.setItem("chartData", JSON.stringify(chartData));
+	localStorage.setItem('chartData', JSON.stringify(chartData));
 }
 
 function makeChart() {
-	const username = JSON.parse(localStorage.getItem("userName"));
-	const income = JSON.parse(localStorage.getItem("income"));
-	const budgets = JSON.parse(localStorage.getItem("budgets"));
-	const expenses = JSON.parse(localStorage.getItem("expenses"));
+	const username = JSON.parse(localStorage.getItem('userName'));
+	const income = JSON.parse(localStorage.getItem('income'));
+	const budgets = JSON.parse(localStorage.getItem('budgets'));
+	const expenses = JSON.parse(localStorage.getItem('expenses'));
 
 	if (!username || !income || !budgets || !expenses) {
-		console.error("Incomplete data in local storage.");
-		toast.error("Incomplete data (Income, budgets, expenses), cannot make charts yet.");
+		console.error('Incomplete data in local storage.');
+		toast.error('Incomplete data (Income, budgets, expenses), cannot make charts yet.');
 		return;
 	}
 
 	const chartData = [
-		["Type", "Amount"],
-		["Budget", budgets.reduce((sum, budget) => sum + budget.amount, 0)],
-		["Expense", expenses.reduce((sum, expense) => sum + expense.amount, 0)],
+		['Type', 'Amount'],
+		['Budget', budgets.reduce((sum, budget) => sum + budget.amount, 0)],
+		['Expense', expenses.reduce((sum, expense) => sum + expense.amount, 0)],
 	];
-	localStorage.setItem("chartData", JSON.stringify(chartData));
 
-	setTimeout(() => {
-		return (document.location.href = "/stats");
-	}, 500);
+	localStorage.setItem('chartData', JSON.stringify(chartData));
+	window.location.replace('/stats');
 }
 
 export function DropMenu() {
@@ -186,8 +192,8 @@ export function DropMenu() {
 									type='button'
 									onClick={downloadDataAsJson}
 									className={classNames(
-										active ? "bg-gray-100 text-navy" : "text-gray-700",
-										"block px-4 py-2 text-sm w-full"
+										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
+										'block px-4 py-2 text-sm w-full'
 									)}>
 									Download Data as JSON
 								</button>
@@ -200,8 +206,8 @@ export function DropMenu() {
 									type='button'
 									onClick={downloadDataAsExcel}
 									className={classNames(
-										active ? "bg-gray-100 text-navy" : "text-gray-700",
-										"block px-4 py-2 text-sm w-full"
+										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
+										'block px-4 py-2 text-sm w-full'
 									)}>
 									Download Data as excel
 								</button>
@@ -214,8 +220,8 @@ export function DropMenu() {
 									type='button'
 									onClick={makeChart}
 									className={classNames(
-										active ? "bg-gray-100 text-navy" : "text-gray-700",
-										"block px-4 py-2 text-sm w-full"
+										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
+										'block px-4 py-2 text-sm w-full'
 									)}>
 									Visualize Data
 								</button>
@@ -226,10 +232,24 @@ export function DropMenu() {
 							{({ active }) => (
 								<button
 									type='button'
+									onClick={resetData}
+									className={classNames(
+										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
+										'block px-4 py-2 text-sm w-full'
+									)}>
+									Reset Data
+								</button>
+							)}
+						</Menu.Item>
+
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type='button'
 									onClick={logout}
 									className={classNames(
-										active ? "bg-gray-100 text-navy" : "text-gray-700",
-										"block w-full px-4 py-2  text-sm"
+										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
+										'block w-full px-4 py-2  text-sm'
 									)}>
 									Sign out
 								</button>
