@@ -18,12 +18,12 @@ export const getAllMatchingItems = ({ category, key, value }) => {
 };
 
 export const getTotalBudgets = () => {
-	const budgets = fetchData("budgets") ?? [];
+	const budgets = fetchData('budgets') ?? [];
 	return budgets.reduce((acc, budget) => (acc += budget.amount), 0);
 };
 
 export const getTotalExpenses = () => {
-	const expenses = fetchData("expenses") ?? [];
+	const expenses = fetchData('expenses') ?? [];
 	return expenses.reduce((acc, expense) => (acc += expense.amount), 0);
 };
 
@@ -43,12 +43,12 @@ export const createBudget = ({ name, amount }) => {
 		createdAt: getDate(),
 		amount: +amount,
 	};
-	const existingBudgets = fetchData("budgets") ?? [];
-	return localStorage.setItem("budgets", JSON.stringify([...existingBudgets, newItem]));
+	const existingBudgets = fetchData('budgets') ?? [];
+	return localStorage.setItem('budgets', JSON.stringify([...existingBudgets, newItem]));
 };
 
 export const updateBudget = ({ id, name, amount }) => {
-	const existingBudgets = fetchData("budgets") ?? [];
+	const existingBudgets = fetchData('budgets') ?? [];
 	const updatedBudgets = existingBudgets.map((budget) => {
 		if (budget.id !== id) return budget;
 		return {
@@ -57,11 +57,11 @@ export const updateBudget = ({ id, name, amount }) => {
 			amount: +amount,
 		};
 	});
-	return localStorage.setItem("budgets", JSON.stringify(updatedBudgets));
+	return localStorage.setItem('budgets', JSON.stringify(updatedBudgets));
 };
 
 export const createExpense = ({ name, amount, budgetId }) => {
-	const budgetName = getAllMatchingItems({ category: "budgets", key: "id", value: budgetId })[0]
+	const budgetName = getAllMatchingItems({ category: 'budgets', key: 'id', value: budgetId })[0]
 		.name;
 	const newItem = {
 		id: crypto.randomUUID(),
@@ -71,12 +71,12 @@ export const createExpense = ({ name, amount, budgetId }) => {
 		budgetId: budgetId,
 		budgetName: budgetName,
 	};
-	const existingExpenses = fetchData("expenses") ?? [];
-	return localStorage.setItem("expenses", JSON.stringify([...existingExpenses, newItem]));
+	const existingExpenses = fetchData('expenses') ?? [];
+	return localStorage.setItem('expenses', JSON.stringify([...existingExpenses, newItem]));
 };
 
 export const updateExpense = ({ id, name, amount, budgetId }) => {
-	const existingExpenses = fetchData("expenses") ?? [];
+	const existingExpenses = fetchData('expenses') ?? [];
 	const updatedExpenses = existingExpenses.map((expense) => {
 		if (expense.id !== id) return expense;
 		return {
@@ -86,11 +86,11 @@ export const updateExpense = ({ id, name, amount, budgetId }) => {
 			budgetId: budgetId,
 		};
 	});
-	return localStorage.setItem("expenses", JSON.stringify(updatedExpenses));
+	return localStorage.setItem('expenses', JSON.stringify(updatedExpenses));
 };
 
 export const calculateSpentByBudget = (budgetId) => {
-	const expenses = fetchData("expenses") ?? [];
+	const expenses = fetchData('expenses') ?? [];
 	const budgetSpent = expenses.reduce((acc, expense) => {
 		if (expense.budgetId !== budgetId) return acc;
 		return (acc += expense.amount);
@@ -99,18 +99,18 @@ export const calculateSpentByBudget = (budgetId) => {
 };
 
 export const formatDateToLocaleString = (epoch) => new Date(epoch).toLocaleDateString();
-export const formatDate = (epoch) => epoch.replace(/-/g, "/");
+export const formatDate = (epoch) => epoch.replace(/-/g, '/');
 
 export const formatPercentage = (amt) => {
 	return amt.toLocaleString(undefined, {
-		style: "percent",
+		style: 'percent',
 		minimumFractionDigits: 0,
 	});
 };
 
 export const formatCurrency = (amt) => {
 	return amt.toLocaleString(undefined, {
-		style: "currency",
-		currency: "USD",
+		style: 'currency',
+		currency: 'USD',
 	});
 };
