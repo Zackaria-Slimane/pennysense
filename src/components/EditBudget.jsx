@@ -1,27 +1,27 @@
-import { useState, useEffect, useRef } from "react";
-import { useFetcher } from "react-router-dom";
-import { getAllMatchingItems } from "../helpers";
+import { useState, useEffect, useRef } from 'react';
+import { useFetcher } from 'react-router-dom';
+import { getAllMatchingItems } from '../helpers';
 
-export function EditBudget({ budgetId }) {
+export function EditBudget({ budgetItem }) {
 	const fetcher = useFetcher();
-	const isSubmitting = fetcher.state === "submitting";
+	const isSubmitting = fetcher.state === 'submitting';
 	const formRef = useRef();
 	const focusRef = useRef();
 	const [budget, setBudget] = useState({});
 
 	useEffect(() => {
-		console.log("budgetId", budgetId);
 		async function getBudget() {
 			let result = await getAllMatchingItems({
-				category: "budgets",
-				key: "id",
-				value: budgetId,
-			})[0];
-			console.log("budget", budget);
+				category: 'budgets',
+				key: 'id',
+				value: budgetItem.id,
+			});
+
+			result = result[0];
 			setBudget(result);
 		}
 		getBudget();
-	}, []);
+	}, [budgetItem.item]);
 
 	useEffect(() => {
 		if (!isSubmitting) {
@@ -30,10 +30,28 @@ export function EditBudget({ budgetId }) {
 		}
 	}, [isSubmitting]);
 
+	const handleSubmit = async () => {
+		const formData = new FormData(formRef.current);
+		const data = {
+			newBudgetId: budget.id,
+			newBudgetName: formData.get('newBudget'),
+			newBudgetAmount: formData.get('newBudgetAmount'),
+			_action: 'editBudget',
+		};
+
+		localStorage.setItem('budgetToEdit', JSON.stringify(data));
+		fetcher.submit(data, { method: 'post', action: 'edit' });
+	};
+
 	return (
 		<div className='font-jetBrain max-w-[600px] p-6 bg-white rounded-2xl flex-1'>
 			<h2 className='text-navy text-2xl'>Edit budget</h2>
-			<fetcher.Form method='post' className='grid gap-4 p-4' ref={formRef}>
+			<fetcher.Form
+				method='post'
+				action='edit'
+				className='grid gap-4 p-4'
+				ref={formRef}
+				onSubmit={handleSubmit}>
 				<div className='grid gap-4'>
 					<label className='text-navy text-lg' htmlFor='newBudget'>
 						Budget Name

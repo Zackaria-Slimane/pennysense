@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Main, mainLoader } from './layouts/Main';
 
 import { deleteBudget } from './actions/deleteBudget';
+import { editBudget } from './actions/editBudget';
 
 import { Dashboard, dashboardAction, dashboardLoader } from './pages/Dashboard';
 import { BudgetPage, budgetAction, budgetLoader } from './pages/BudgetPage';
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
 						path: 'delete',
 						action: deleteBudget,
 					},
+					{
+						path: 'edit',
+						action: editBudget,
+					},
 				],
 			},
 			{
@@ -62,7 +67,7 @@ export function App() {
 	return (
 		<div className='App overflow-x-hidden'>
 			<RouterProvider router={router} />
-			<ToastContainer />
+			<ToastContainer theme='colored' limit={1} autoClose={1500} />
 		</div>
 	);
 }
