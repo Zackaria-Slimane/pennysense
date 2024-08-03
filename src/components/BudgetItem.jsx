@@ -1,9 +1,9 @@
-import { useState, Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { Form, Link } from "react-router-dom";
-import { EditBudget } from "../components/EditBudget";
-import { FaRegTrashCan, FaMoneyCheckDollar, FaPen } from "react-icons/fa6";
-import { calculateSpentByBudget, formatCurrency, formatPercentage } from "../helpers";
+import { useState, Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { Form, Link } from 'react-router-dom';
+import { EditBudget } from '../components/EditBudget';
+import { FaRegTrashCan, FaMoneyCheckDollar, FaPen } from 'react-icons/fa6';
+import { calculateSpentByBudget, formatCurrency, formatPercentage } from '../helpers';
 
 export function BudgetItem({ budget, showDelete = false }) {
 	const { id, name, amount } = budget;
@@ -11,7 +11,6 @@ export function BudgetItem({ budget, showDelete = false }) {
 	const [showBudgetForm, setShowBudgetForm] = useState(false);
 
 	function toggleBudgetForm() {
-		console.log("toggleBudgetForm");
 		setShowBudgetForm(!showBudgetForm);
 	}
 
@@ -41,7 +40,7 @@ export function BudgetItem({ budget, showDelete = false }) {
 								leaveFrom='opacity-100 scale-100'
 								leaveTo='opacity-0 scale-95'>
 								<Dialog.Panel className='w-full max-w-[600px] transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
-									<EditBudget budgetId={id} />
+									<EditBudget budgetItem={budget} />
 								</Dialog.Panel>
 							</Transition.Child>
 						</div>
@@ -59,7 +58,7 @@ export function BudgetItem({ budget, showDelete = false }) {
 				</progress>
 				<div className='progress-text'>
 					<small>{formatCurrency(spent)} spent</small>
-					<small className={`${amount - spent < 0 ? "text-tomato" : "text-alice"}`}>
+					<small className={`${amount - spent < 0 ? 'text-tomato' : 'text-alice'}`}>
 						{formatCurrency(amount - spent)} remaining
 					</small>
 				</div>
@@ -69,7 +68,7 @@ export function BudgetItem({ budget, showDelete = false }) {
 							method='post'
 							action='delete'
 							onSubmit={(event) => {
-								if (!confirm("Are you sure you want to permanently delete this budget?")) {
+								if (!confirm('Are you sure you want to permanently delete this budget?')) {
 									event.preventDefault();
 								}
 							}}>
