@@ -2,7 +2,7 @@ import { ExpenseItem } from './ExpenseItem';
 
 export function Table({ expenses, showBudget = true }) {
 	const sortedExpenses = [...expenses].sort(
-		(a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+		(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 	);
 	return (
 		<div className=' max-w-full pb-12'>
@@ -17,7 +17,7 @@ export function Table({ expenses, showBudget = true }) {
 					</tr>
 				</thead>
 				<tbody className='mx-auto'>
-					{expenses.map((expense) => (
+					{sortedExpenses.map((expense) => (
 						<tr className='m-auto items-center text-navy py-4' key={expense.id}>
 							<ExpenseItem expense={expense} showBudget={showBudget} />
 						</tr>
