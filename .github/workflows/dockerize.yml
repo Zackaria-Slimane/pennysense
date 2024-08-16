@@ -33,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/zsportfolio
+          images: ${{ secrets.DOCKER_USERNAME }}/pennysense
           tags: |
             type=raw,value=${{ env.BRANCH_NAME }}-{{date 'YYYYMMDDHHmm'}}
             type=raw,value=${{ env.BRANCH_NAME }}-latest
