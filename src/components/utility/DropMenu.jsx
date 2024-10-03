@@ -1,4 +1,7 @@
+'use client';
+
 import { Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import { FaRegUser } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
@@ -39,14 +42,16 @@ function resetData() {
 }
 
 function downloadDataAsJson() {
-	const storedObjects = [
-		JSON.parse(localStorage.getItem('userName')),
-		JSON.parse(localStorage.getItem('income')),
-		JSON.parse(localStorage.getItem('budgets')),
-		JSON.parse(localStorage.getItem('expenses')),
-	];
+	const storedObjects = {
+		userName: JSON.parse(localStorage.getItem('userName')),
+		income: JSON.parse(localStorage.getItem('income')),
+		budgets: JSON.parse(localStorage.getItem('budgets')),
+		expenses: JSON.parse(localStorage.getItem('expenses')),
+	};
 
-	if (!storedObjects || !storedObjects.length) {
+	console.log('stored data to json', storedObjects);
+
+	if (!storedObjects.userName || !storedObjects.budgets) {
 		console.error('No data to download.');
 		toast.error('Incomplete data in  storage. Cannot download  file.');
 		return;
@@ -167,6 +172,7 @@ function makeChart() {
 }
 
 export function DropMenu() {
+	const navigate = useNavigate();
 	return (
 		<Menu as='div' className='relative inline-flex text-left'>
 			<div>
@@ -190,6 +196,19 @@ export function DropMenu() {
 							{({ active }) => (
 								<button
 									type='button'
+									onClick={navigate.bind(null, '/import')}
+									className={classNames(
+										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
+										'block px-4 py-2 text-sm w-full'
+									)}>
+									Import JSON Data
+								</button>
+							)}
+						</Menu.Item>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type='button'
 									onClick={downloadDataAsJson}
 									className={classNames(
 										active ? 'bg-gray-100 text-navy' : 'text-gray-700',
@@ -199,7 +218,6 @@ export function DropMenu() {
 								</button>
 							)}
 						</Menu.Item>
-
 						<Menu.Item>
 							{({ active }) => (
 								<button
@@ -213,7 +231,6 @@ export function DropMenu() {
 								</button>
 							)}
 						</Menu.Item>
-
 						<Menu.Item>
 							{({ active }) => (
 								<button
@@ -227,7 +244,6 @@ export function DropMenu() {
 								</button>
 							)}
 						</Menu.Item>
-
 						<Menu.Item>
 							{({ active }) => (
 								<button
@@ -241,7 +257,6 @@ export function DropMenu() {
 								</button>
 							)}
 						</Menu.Item>
-
 						<Menu.Item>
 							{({ active }) => (
 								<button
