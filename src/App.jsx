@@ -11,6 +11,7 @@ import { BudgetPage, budgetAction, budgetLoader } from './pages/BudgetPage';
 import { ExpensesPage, expensesAction, expensesLoader } from './pages/ExpensesPage';
 import { Error } from './pages/Error';
 import { Stats } from './pages/Stats';
+import { Import } from './pages/Import';
 
 const router = createBrowserRouter([
 	{
@@ -50,12 +51,17 @@ const router = createBrowserRouter([
 				action: expensesAction,
 				errorElement: <Error />,
 			},
+			{
+				path: 'stats',
+				element: <Stats />,
+				errorElement: <Error />,
+			},
+			{
+				path: 'import',
+				element: <Import />,
+				errorElement: <Error />,
+			},
 		],
-	},
-	{
-		path: '/stats',
-		element: <Stats />,
-		errorElement: <Error />,
 	},
 	{
 		path: '*',
